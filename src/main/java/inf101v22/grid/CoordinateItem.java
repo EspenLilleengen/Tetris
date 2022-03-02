@@ -25,6 +25,20 @@ public class CoordinateItem <E> {
         this.item = item;
     }
 
+    /**
+     * @return the row of the coordinate held by the object
+     */
+    public int getRow() {
+        return coordinate.row;
+    }
+
+    /**
+     * @return the colum of the coordinate held by the object
+     */
+    public int getCol() {
+        return coordinate.col;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(coordinate, item);
@@ -38,7 +52,11 @@ public class CoordinateItem <E> {
             return false;
         
         CoordinateItem<E> other = (CoordinateItem<E>) obj;
-        return this.coordinate.equals(other.coordinate) && this.item.equals(other.item);
+        if (other.item!=null) {
+            return this.coordinate.equals(other.coordinate) && this.item.equals(other.item);
+        } else {
+            return this.coordinate.equals(other.coordinate) && this.item==null;
+        }
     }
 
     @Override

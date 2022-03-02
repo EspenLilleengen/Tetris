@@ -1,5 +1,12 @@
 package inf101v22.grid;
 
+/**
+ * An interface for a 2 dimentional generic type grid 
+ * 
+ * @param <E> The type of elemnts to be held bt the grid
+ * 
+ * @author Espen Lilleengen
+ */
 public interface IGrid<E> extends Iterable<CoordinateItem<E>> {
 
     /** @return number of rows in grid */

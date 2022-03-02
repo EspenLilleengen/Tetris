@@ -2,7 +2,7 @@ For å fullføre laben, ber vi deg om å svare på følgende spørsmål. Svar p�
 
 ## Hva syntes du om denne semesteroppgaven? Har du forslag til hvordan den kan gjøres bedre eller enklere?
 
-<!-- ditt svar her -->
+<!-- ditt svar her --> legge til lenker til relevante kilder/kurs så man kan lese seg opp på temaer som behandles
 
 ## Hvor i koden din benytter du deg av gjenbruk av kode? Er det noen steder du føler du ikke klarte å gjenbruke kode på en god måte?
 
