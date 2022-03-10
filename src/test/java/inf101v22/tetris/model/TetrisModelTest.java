@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import inf101v22.grid.Coordinate;
 import inf101v22.grid.CoordinateItem;
+import inf101v22.tetris.model.piece.PositionedPieceFactory;
+import inf101v22.tetris.model.piece.PositionedPieceFactoryTest;
 import inf101v22.tetris.view.TetrisViewable;
 
 /**
@@ -27,26 +29,26 @@ public class TetrisModelTest {
 
     @Test
     void modelSanityTest() {
-        TetrisModel model = new TetrisModel();
+        TetrisModel model = new TetrisModel(new PositionedPieceFactory(PositionedPieceFactoryTest.positionedPieces));
 
-        String testString = "g--------y\n";
-        for (int i = 0; i <13; i++) {
+        String testString = "g---TTT--y\n-----T----\n";
+        for (int i = 0; i <12; i++) {
             testString += "----------\n";
         }
         testString += "r--------b\n";
 
-        String modelString = TetrisBoard.charArray2dToString(model.tetrisBoard.toCharArray2d());
+        String modelString = TetrisBoard.charArray2dToString(model.addPieceToCharArray2d());
 
         assertEquals(testString, modelString);
-
     }
+    
 
     @Test
-    void testIterator() {
+    void testBoardIterator() {
         TetrisViewable model = new TetrisModel();
 
         List<CoordinateItem<Tile>> items = new ArrayList<>();
-        for (CoordinateItem<Tile> coordinateItem : model.iterable()) {
+        for (CoordinateItem<Tile> coordinateItem : model.boardIterable()) {
             items.add(coordinateItem);
         }
 
@@ -56,5 +58,21 @@ public class TetrisModelTest {
         assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(0,9), new Tile(Color.YELLOW, 'y'))));
         assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(14,9), new Tile(Color.BLUE, 'b'))));
         assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(1,1), null)));
+    }
+
+    @Test
+    void testPieceIterable() {
+        TetrisModel model = new TetrisModel(new PositionedPieceFactory(PositionedPieceFactoryTest.positionedPieces));
+
+        List<CoordinateItem<Tile>> items = new ArrayList<>();
+        for (CoordinateItem<Tile> item : model.pieceIterable()) { 
+            items.add(item);
+        }
+
+        assertEquals(4, items.size());
+        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(0, 4), new Tile(Color.GREEN, 'T'))));
+        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(0,5), new Tile(Color.GREEN, 'T'))));
+        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(0,6), new Tile(Color.GREEN, 'T'))));
+        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(1,5), new Tile(Color.GREEN, 'T'))));
     }
 }

@@ -35,7 +35,28 @@ public class TetrisView extends JComponent{
         int windowHeight = this.getHeight();
 
         drawTetrisBoard(canvas, 4, 4, windowWidth-2*4, windowHeight-2*4, 2);
+        drawTetrisPiece(canvas, 4, 4, windowWidth-2*4, windowHeight-2*4, 2);
+    }
 
+    private void drawTetrisPiece(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding) {
+        int rows = viewable.getRows();
+        int cols = viewable.getCols();
+        boardHeight-=boardPadding;
+        boardWidth-=boardPadding;
+
+        for (CoordinateItem<Tile> cItem : viewable.pieceIterable()) {
+            int row = cItem.getRow();
+            int col = cItem.getCol();
+            Color color = cItem.item.color;
+
+            int tileX = xBoard + col * boardWidth/cols;
+            int tileY = yBoard + row * boardHeight/rows;
+            int nextX = xBoard + (col +1) * boardWidth/cols;
+            int nextY = yBoard + (row +1) * boardHeight/rows;
+            int tileWidth = nextX - tileX;
+            int tileHeight = nextY - tileY;
+            drawTileWithRightBottomPadding(g, tileX+2, tileY+2, tileWidth, tileHeight, 2, color);
+        }
     }
 
     private void drawTetrisBoard(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding) {
@@ -48,7 +69,7 @@ public class TetrisView extends JComponent{
         boardHeight-=boardPadding;
         boardWidth-=boardPadding;
 
-        for (CoordinateItem<Tile> cItem : viewable.iterable()) {
+        for (CoordinateItem<Tile> cItem : viewable.boardIterable()) {
             int row = cItem.getRow();
             int col = cItem.getCol();
             Color color;

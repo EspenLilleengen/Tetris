@@ -27,5 +27,4 @@ public class TetrisMain {
         frame.pack();
         frame.setVisible(true);
     }
-    
 }

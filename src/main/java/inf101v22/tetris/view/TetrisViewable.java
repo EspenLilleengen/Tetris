@@ -1,5 +1,6 @@
 package inf101v22.tetris.view;
 
+
 import inf101v22.grid.CoordinateItem;
 import inf101v22.tetris.model.Tile;
 
@@ -17,7 +18,15 @@ public interface TetrisViewable {
     int getCols();
 
     /**
-     * @return An iterator over a collection of {@link CoordinateItem} with the type parameter {@link Tile}.
+     * An iterator over the tiles in a Tetris board
+     * @return An iterable of {@link CoordinateItem}-objects with the type parameter {@link Tile}.
      */
-    Iterable<CoordinateItem<Tile>> iterable();
+    Iterable<CoordinateItem<Tile>> boardIterable();
+
+    /** 
+     * An iterator over the coordinates in a Tetris-piece 
+     * @return An iterable of {@link CoordinateItem}-objects with the type parameter {@link Tile}.
+    */
+    Iterable<CoordinateItem<Tile>> pieceIterable();
+
 }
