@@ -3,16 +3,19 @@ package inf101v22.tetris;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import inf101v22.tetris.controller.TetrisController;
 import inf101v22.tetris.model.TetrisModel;
 import inf101v22.tetris.view.TetrisView;
-import inf101v22.tetris.view.TetrisViewable;
+import java.awt.event.KeyListener;
 
 public class TetrisMain {
     public static final String WINDOW_TITLE = "INF101 Tetris";
 
     public static void main(String[] args) {
-        TetrisViewable tetrisModel = new TetrisModel();
+        TetrisModel tetrisModel = new TetrisModel();
         JComponent view = new TetrisView(tetrisModel);
+        KeyListener controller =new TetrisController(tetrisModel, view);
+        
           
         // The JFrame is the "root" application window.
         // We here set som properties of the main window, 

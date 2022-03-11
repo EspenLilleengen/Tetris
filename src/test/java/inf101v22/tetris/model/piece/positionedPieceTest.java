@@ -7,6 +7,7 @@ import inf101v22.grid.Coordinate;
 import inf101v22.grid.CoordinateItem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
@@ -44,6 +45,15 @@ public class positionedPieceTest {
         assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(0, 1), testTile )));
         assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(0, 2), testTile )));
         assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(1, 1), testTile )));
+    }
+
+    @Test
+    void testCopyTo() {
+        PositionedPiece testPiece = new PositionedPiece(PieceShape.O, new Coordinate(0,0));
+        PositionedPiece copyPiece = testPiece.copyTo(1,1);
+
+        assertEquals(new PositionedPiece(PieceShape.O, new Coordinate(1,1)), copyPiece);
+        assertFalse(testPiece.equals(copyPiece));
     }
     
 }

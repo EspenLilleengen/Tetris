@@ -4,16 +4,17 @@ import java.awt.Color;
 
 import inf101v22.grid.Coordinate;
 import inf101v22.grid.CoordinateItem;
+import inf101v22.tetris.controller.TetrisControllable;
 import inf101v22.tetris.model.piece.PositionedPiece;
 import inf101v22.tetris.model.piece.PositionedPieceFactory;
 import inf101v22.tetris.view.TetrisViewable;
 
 /**
- * A class that implements {@link TetrisViewable}. Holds a {@link TetrisBoard}-object 
+ * A class that implements {@link TetrisViewable} and {@link TetrisControllable}. Holds a {@link TetrisBoard}-object 
  * 
  * @author Espen Lilleengen
  */
-public class TetrisModel implements TetrisViewable{
+public class TetrisModel implements TetrisViewable, TetrisControllable{
 
     public final TetrisBoard tetrisBoard;
 
@@ -86,5 +87,31 @@ public class TetrisModel implements TetrisViewable{
     public Iterable<CoordinateItem<Tile>> pieceIterable() {
         return positionedPiece; 
     }
+
+    @Override
+    public boolean moveFallingPiece(int deltaRow, int deltaCol) {
+        PositionedPiece candidate = positionedPiece.copyTo(deltaRow, deltaCol);
     
+        if (positionedPieceLegality(candidate)) {
+            this.positionedPiece = candidate;
+            return true;
+        }
+        return false;
+            
+    }
+
+    /** 
+     * Chechs if the next position is legal for the candidate
+     * @return true if the next position is legal and false otherwise
+    */
+    private boolean positionedPieceLegality(PositionedPiece candidate) {
+        for (CoordinateItem<Tile> cItem : candidate) { 
+            if (!tetrisBoard.coordinateIsOnGrid(cItem.coordinate)) 
+                return false;
+            
+            if (!(tetrisBoard.get(cItem.coordinate)==null)) 
+                return false;
+        }
+        return true;
+    }
 }

@@ -15,8 +15,8 @@ import inf101v22.tetris.model.Tile;
 */
 public class PositionedPiece implements Iterable<CoordinateItem<Tile>>{
 
-    private PieceShape pieceShape;
-    private Coordinate coordinate;
+    private final PieceShape pieceShape;
+    private final Coordinate coordinate;
 
     /** 
      * Constructs a new {@link PositionedPiece}-object with the given {@link PieceShape} and {@link Coordinate}
@@ -81,5 +81,14 @@ public class PositionedPiece implements Iterable<CoordinateItem<Tile>>{
             "}";
     }
 
-
+    /** 
+     * Makes a copy of the object, but moved up/down acording to the given arguments
+     * 
+     * @param deltaRow where to move the new object along the row
+     * @param deltaColumn where to move the new object along the column
+     * @return The copy of the object, with new Coordinates
+    */
+    public PositionedPiece copyTo(int deltaRow, int deltaColumn) {
+        return new PositionedPiece(pieceShape, new Coordinate(coordinate.row+deltaRow, coordinate.col+deltaColumn));
+     }
 }
