@@ -100,6 +100,17 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
             
     }
 
+    @Override
+    public boolean rotateFallingPiece() {
+        PositionedPiece candidate = positionedPiece.rotate();
+
+        if (positionedPieceLegality(candidate)) {
+            this.positionedPiece = candidate;
+            return true;
+        }
+        return false;
+    }
+
     /** 
      * Chechs if the next position is legal for the candidate
      * @return true if the next position is legal and false otherwise

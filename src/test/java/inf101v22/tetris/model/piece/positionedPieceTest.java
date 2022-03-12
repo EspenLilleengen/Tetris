@@ -55,5 +55,20 @@ public class positionedPieceTest {
         assertEquals(new PositionedPiece(PieceShape.O, new Coordinate(1,1)), copyPiece);
         assertFalse(testPiece.equals(copyPiece));
     }
+
+    @Test
+    void rotateTest() {
+        PositionedPiece piece = new PositionedPiece(PieceShape.I, new Coordinate(2, 2));
+
+        PositionedPiece rotatedPiece = piece.rotate();
+
+        int oldCenterRow = piece.coordinate.row + piece.getHeight()/2;
+        int oldCenterCol = piece.coordinate.col + piece.getWidth()/2;
+        int newCenterRow = rotatedPiece.coordinate.row + rotatedPiece.getHeight()/2;
+        int newCenterCol = rotatedPiece.coordinate.col + rotatedPiece.getWidth()/2;
+
+        assertEquals(oldCenterCol, newCenterCol);
+        assertEquals(oldCenterRow, newCenterRow);
+    }
     
 }

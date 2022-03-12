@@ -15,8 +15,8 @@ import inf101v22.tetris.model.Tile;
 */
 public class PositionedPiece implements Iterable<CoordinateItem<Tile>>{
 
-    private final PieceShape pieceShape;
-    private final Coordinate coordinate;
+    final PieceShape pieceShape;
+    final Coordinate coordinate;
 
     /** 
      * Constructs a new {@link PositionedPiece}-object with the given {@link PieceShape} and {@link Coordinate}
@@ -91,4 +91,26 @@ public class PositionedPiece implements Iterable<CoordinateItem<Tile>>{
     public PositionedPiece copyTo(int deltaRow, int deltaColumn) {
         return new PositionedPiece(pieceShape, new Coordinate(coordinate.row+deltaRow, coordinate.col+deltaColumn));
      }
+
+    /**
+     * Rotates a piece around its center
+     * 
+     * @return the rotated and positioned piece 
+     */
+    public PositionedPiece rotate() {
+        PositionedPiece rotatedPiece = new PositionedPiece(pieceShape.rotate(), coordinate);
+
+        int oldCenterRow = coordinate.row + getHeight()/2;
+        int oldCenterCol = coordinate.col + getWidth()/2;
+        int newCenterRow = rotatedPiece.coordinate.row + rotatedPiece.getHeight()/2;
+        int newCenterCol = rotatedPiece.coordinate.col + rotatedPiece.getWidth()/2;
+
+        int deltaRow = oldCenterRow-newCenterRow;
+        int deltaCol = oldCenterCol-newCenterCol;
+        
+        
+
+        return rotatedPiece.copyTo(deltaRow,deltaCol);
+
+    } 
 }

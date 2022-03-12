@@ -8,12 +8,19 @@ package inf101v22.tetris.controller;
 public interface TetrisControllable {
 
     /** 
-     * Moves a tetris piece in the given row and column direction. 
+     * Moves a falling tetris piece in the given row and column direction. 
      * 
      * @param deltaRow where to move the piece along the row
      * @param deltaColumn where to move the piece along the column
      * @return true if the move was successful and false otherwise
     */
     boolean moveFallingPiece(int deltaRow, int deltaCol);
+
+    /**
+     * Rotates a falling tetris piece
+     * 
+     * @return true if the piece can rotate and false otherwise
+     */
+    boolean rotateFallingPiece();
     
 }

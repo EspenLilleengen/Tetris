@@ -99,6 +99,21 @@ public class PieceShape {
         return tile;
     }
 
+    /**
+     * Roates the shape of the teris piece
+     * @return a 2 dimentional boolean array of the rotatet shape
+     */
+    public PieceShape rotate() { 
+        boolean[][] rotatedShape = new boolean[getWidth()][getHeight()];
+
+        for (int i = 0; i <getWidth(); i++) { 
+            for (int j = 0; j < getHeight(); j++) {
+                rotatedShape[getWidth()-1-i][j] = getShape()[j][i];
+            }
+        }
+        return new PieceShape(getTile(), rotatedShape);
+    }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -108,6 +123,10 @@ public class PieceShape {
             return false;
         }
         PieceShape other = (PieceShape) obj;
+        if (!(this.getHeight() == other.getHeight()))
+            return false;
+        if (!(this.getWidth() == other.getWidth()))
+            return false;
         for (int i = 0; i <getHeight(); i++) {
             for (int j = 0; j < getWidth(); j++) {
                 if (this.shape[i][j] != other.shape[i][j]) { 

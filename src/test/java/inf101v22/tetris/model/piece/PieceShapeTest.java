@@ -27,4 +27,104 @@ public class PieceShapeTest {
             }
         }
     }
+
+    @Test
+    void rotateTest() {
+        PieceShape Lpiece = PieceShape.L;
+        PieceShape Tpiece = PieceShape.T;
+        PieceShape Ipiece = PieceShape.I;
+        PieceShape Zpiece = PieceShape.Z;
+
+        PieceShape rotatedL = Lpiece.rotate();
+        PieceShape rotatedT = Tpiece.rotate();
+        PieceShape rotatedI = Ipiece.rotate();
+        PieceShape rotatedZ = Zpiece.rotate();
+
+        boolean[][] expectedL = new boolean[][] {
+            {true,true},
+            {false,true},
+            {false, true},
+        };
+
+        boolean[][] expectedT = new boolean[][] {
+            {true,false},
+            {true,true},
+            {true, false},
+        };
+
+        boolean[][] expectedI = new boolean[][] {
+            {true},
+            {true},
+            {true},
+            {true},
+        };
+
+        boolean[][] expectedZ = new boolean[][] {
+            {false,true},
+            {true,true},
+            {true, false},
+        };
+
+
+        assertEquals(expectedL.length, rotatedL.getHeight());
+        assertEquals(expectedL[0].length, rotatedL.getWidth());
+        assertEquals(expectedT.length, rotatedT.getHeight());
+        assertEquals(expectedT[0].length, rotatedT.getWidth());
+        assertEquals(expectedI.length, rotatedI.getHeight());
+        assertEquals(expectedI[0].length, rotatedI.getWidth());
+        assertEquals(expectedZ.length, rotatedZ.getHeight());
+        assertEquals(expectedZ[0].length, rotatedZ.getWidth());
+
+        for (int i = 0; i <3; i++) {
+            for (int j = 0; j <2; j++) {
+                assertEquals(expectedL[i][j],rotatedL.getShape()[i][j]);
+                assertEquals(expectedT[i][j],rotatedT.getShape()[i][j]);
+                assertEquals(expectedZ[i][j],rotatedZ.getShape()[i][j]);
+            }
+        }
+
+        for (int i = 0; i <3;i++) {
+            assertEquals(expectedI[i][0],rotatedI.getShape()[i][0]);
+        }
+    }
+
+    @Test
+    void rotateMultipleTimesTest() {
+        PieceShape rotated1 = PieceShape.L.rotate();
+        PieceShape rotated2 = rotated1.rotate();
+        PieceShape rotated3 = rotated2.rotate();
+        PieceShape rotated4 = rotated3.rotate();
+
+        boolean[][] expected1 = new boolean[][] {
+            {true,true},
+            {false,true},
+            {false, true},
+        };
+
+        boolean[][] expected2 = new boolean[][] {
+            {true,true, true},
+            {true,false,false},
+        };
+
+        boolean[][] expected3 = new boolean[][] {
+            {true,false},
+            {true,false},
+            {true, true},
+        };
+
+        for (int i = 0; i <3; i++) {
+            for (int j = 0; j <2; j++) {
+                assertEquals(expected1[i][j], rotated1.getShape()[i][j]);
+                assertEquals(expected3[i][j], rotated3.getShape()[i][j]);
+            }
+        }
+        
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j<3; j++) {
+                assertEquals(expected2[i][j], rotated2.getShape()[i][j]);
+            }
+        }
+        assertEquals(PieceShape.L, rotated4);
+
+    }
 }

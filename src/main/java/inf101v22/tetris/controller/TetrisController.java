@@ -38,8 +38,7 @@ public class TetrisController implements java.awt.event.KeyListener {
             model.moveFallingPiece(1, 0);
         }
         else if (e.getKeyCode()==KeyEvent.VK_SHIFT) { //my up-key is broken;(
-            //TODO: Rotate the piece
-            model.moveFallingPiece(-1, 0);
+            model.rotateFallingPiece();
         }
         else if (e.getKeyCode()==KeyEvent.VK_SPACE) {
             while (model.moveFallingPiece(1, 0));
