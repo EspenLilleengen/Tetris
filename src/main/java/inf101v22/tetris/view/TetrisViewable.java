@@ -2,6 +2,7 @@ package inf101v22.tetris.view;
 
 
 import inf101v22.grid.CoordinateItem;
+import inf101v22.tetris.model.GameScreen;
 import inf101v22.tetris.model.Tile;
 
 /**
@@ -28,5 +29,8 @@ public interface TetrisViewable {
      * @return An iterable of {@link CoordinateItem}-objects with the type parameter {@link Tile}.
     */
     Iterable<CoordinateItem<Tile>> pieceIterable();
+
+    /**@return the game screen status of the object */
+    GameScreen getGameScreen();
 
 }

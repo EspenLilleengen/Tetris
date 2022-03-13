@@ -16,10 +16,12 @@ import inf101v22.tetris.view.TetrisViewable;
  */
 public class TetrisModel implements TetrisViewable, TetrisControllable{
 
-    public final TetrisBoard tetrisBoard;
+    private TetrisBoard tetrisBoard;
 
     private PositionedPiece positionedPiece;
     private PositionedPieceFactory positionedPieceFactory;
+
+    private GameScreen gameScreen;
 
     /**
      * Construct a tetris model that holds a {@link TetrisBoard}-object with the width of 10 tiles an a height of 15 tiles
@@ -54,6 +56,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         positionedPieceFactory = new PositionedPieceFactory();
         positionedPieceFactory.setCenterColumn(getCols()/2);
         positionedPiece = positionedPieceFactory.getNextPositionedPiece();
+        gameScreen = GameScreen.ACTIVE_GAME;
     }
 
     @Override
@@ -124,5 +127,32 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
                 return false;
         }
         return true;
+    }
+
+    @Override
+    public void dropFallingPiece() {
+        while(moveFallingPiece(1,0));
+        fixFallingPiece();
+    }
+
+    private void getNewPiece() {
+        PositionedPiece newPiece = positionedPieceFactory.getNextPositionedPiece();
+        if (!(positionedPieceLegality(newPiece))) { 
+            gameScreen = GameScreen.GAME_OVER;
+            return;
+        }
+        this.positionedPiece = newPiece;
+    }
+
+    private void fixFallingPiece() {
+        for (CoordinateItem<Tile> cItem : positionedPiece) {
+            tetrisBoard.set(cItem.coordinate, cItem.item);
+        }
+        getNewPiece();
+    }
+
+    @Override
+    public GameScreen getGameScreen() {
+        return gameScreen;
     }
 }

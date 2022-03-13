@@ -4,6 +4,8 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JComponent;
 
+import inf101v22.tetris.model.GameScreen;
+
 /**
  * Controls the data flow into {@link TetrisModel} and updates the {@link TetrisView} whenever data changes. 
  * 
@@ -28,7 +30,11 @@ public class TetrisController implements java.awt.event.KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode()==KeyEvent.VK_LEFT) { 
+        if (model.getGameScreen()==GameScreen.GAME_OVER) {
+            view.repaint();
+            return;
+        }
+        else if (e.getKeyCode()==KeyEvent.VK_LEFT) { 
             model.moveFallingPiece(0, -1);
         } 
         else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
@@ -41,7 +47,7 @@ public class TetrisController implements java.awt.event.KeyListener {
             model.rotateFallingPiece();
         }
         else if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-            while (model.moveFallingPiece(1, 0));
+           model.dropFallingPiece();
         }
         view.repaint();
     }

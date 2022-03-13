@@ -3,11 +3,12 @@ package inf101v22.tetris.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-
+import java.awt.Font;
 
 import javax.swing.JComponent;
 
 import inf101v22.grid.CoordinateItem;
+import inf101v22.tetris.model.GameScreen;
 import inf101v22.tetris.model.Tile;
 
 /**
@@ -36,6 +37,10 @@ public class TetrisView extends JComponent{
 
         drawTetrisBoard(canvas, 4, 4, windowWidth-2*4, windowHeight-2*4, 2);
         drawTetrisPiece(canvas, 4, 4, windowWidth-2*4, windowHeight-2*4, 2);
+
+        if (viewable.getGameScreen()==GameScreen.GAME_OVER) {
+            drawGameOver(canvas, windowWidth, windowHeight);
+        }
     }
 
     private void drawTetrisPiece(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding) {
@@ -93,6 +98,16 @@ public class TetrisView extends JComponent{
     private void drawTileWithRightBottomPadding(Graphics g, int x, int y, int tileWidth, int tileHeight, int tilePadding, Color color) {
         g.setColor(color);
         g.fillRect(x, y, tileWidth-tilePadding, tileHeight-tilePadding);
+    }
+
+    private void drawGameOver(Graphics canvas, int windowWidth, int windowHeight) {
+        canvas.setColor(new Color(0, 0, 0, 128));
+        canvas.fillRect(0, 0, windowWidth, windowHeight);
+        canvas.setColor(Color.WHITE);
+        Font myFont = new Font("SansSerif", Font.BOLD,30);
+        canvas.setFont(myFont);
+        GraphicHelperMethods.drawCenteredString(canvas, "Game over", 0, 0, windowWidth, windowHeight);
+
     }
 
     @Override

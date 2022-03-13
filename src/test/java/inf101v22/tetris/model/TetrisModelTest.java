@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -100,5 +101,31 @@ public class TetrisModelTest {
         testString += "----TTT---\nr----T---b\n";
 
         assertEquals(testString, modelString);
+    }
+
+    @Test
+    void getGameScreenTest() {
+        TetrisModel testModel = new TetrisModel();
+
+        assertEquals(GameScreen.ACTIVE_GAME, testModel.getGameScreen());
+    }
+
+    @Test
+    void dropFallingPieceTest() {
+        TetrisModel model = new TetrisModel(new PositionedPieceFactory(PositionedPieceFactoryTest.positionedPieces));
+
+        model.dropFallingPiece();
+
+        model.moveFallingPiece(0, 1);
+        model.moveFallingPiece(0, 1);
+
+        String modelString1 = TetrisBoard.charArray2dToString(Arrays.copyOfRange(model.addPieceToCharArray2d(), 13, 15));
+        String modelString2 = TetrisBoard.charArray2dToString(Arrays.copyOfRange(model.addPieceToCharArray2d(), 0, 2));
+
+        String expectedString1 = "----TTT---\nr----T---b\n";
+        String expectedString2 = "g-----OO-y\n------OO--\n";
+
+        assertEquals(expectedString1, modelString1);
+        assertEquals(expectedString2, modelString2);
     }
 }

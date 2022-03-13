@@ -1,5 +1,7 @@
 package inf101v22.tetris.controller;
 
+import inf101v22.tetris.model.GameScreen;
+
 /** 
  * An object of this type alows a tetris piece to be moved around on a board.
  * 
@@ -22,5 +24,16 @@ public interface TetrisControllable {
      * @return true if the piece can rotate and false otherwise
      */
     boolean rotateFallingPiece();
+
+    /**
+     * Moves a falling tetris piece down until it reaches an obstacle. 
+     * When a piece has been droppd, its position will be fixed
+    */
+    void dropFallingPiece();
+
+    /**@return the game screen status of the object */
+    GameScreen getGameScreen();
+
+
     
 }
