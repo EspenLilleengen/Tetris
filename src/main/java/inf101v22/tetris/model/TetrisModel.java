@@ -16,7 +16,7 @@ import inf101v22.tetris.view.TetrisViewable;
  */
 public class TetrisModel implements TetrisViewable, TetrisControllable{
 
-    private TetrisBoard tetrisBoard;
+    private final TetrisBoard tetrisBoard;
 
     private PositionedPiece positionedPiece;
     private PositionedPieceFactory positionedPieceFactory;
@@ -133,6 +133,8 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     public void dropFallingPiece() {
         while(moveFallingPiece(1,0));
         fixFallingPiece();
+        tetrisBoard.removeFullRows();
+        getNewPiece();
     }
 
     private void getNewPiece() {
@@ -148,7 +150,6 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         for (CoordinateItem<Tile> cItem : positionedPiece) {
             tetrisBoard.set(cItem.coordinate, cItem.item);
         }
-        getNewPiece();
     }
 
     @Override

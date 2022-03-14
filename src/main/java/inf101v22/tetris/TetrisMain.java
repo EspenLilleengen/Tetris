@@ -8,6 +8,8 @@ import inf101v22.tetris.model.TetrisModel;
 import inf101v22.tetris.view.TetrisView;
 import java.awt.event.KeyListener;
 
+//TODO: make better tests (String.contains())
+
 public class TetrisMain {
     public static final String WINDOW_TITLE = "INF101 Tetris";
 

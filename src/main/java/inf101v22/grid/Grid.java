@@ -12,7 +12,7 @@ import java.util.List;
  * @author Espen Lilleengen
  */
 public class Grid<E> implements IGrid<E>{
-    private final List<E> coordinateItems;
+    private List<E> coordinateItems;
     private final int rows;
     private final int cols;
 

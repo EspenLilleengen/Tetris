@@ -1,5 +1,6 @@
 package inf101v22.tetris.model;
 
+import inf101v22.grid.Coordinate;
 import inf101v22.grid.CoordinateItem;
 import inf101v22.grid.Grid;
 
@@ -66,4 +67,54 @@ public class TetrisBoard extends Grid<Tile>{
         return charArrayAsString;
     }
 
+    /**
+     * Removes all the full rows from the board
+     * 
+     * @return the number of rows removed from the board
+     */
+    public int removeFullRows() {
+        int rowsRemoved = 0;
+
+        int a = getRows() -1;
+        int b = getRows() -1;
+
+        while(a>=0) {
+            while (b>=0 && (!checkElementInRow(b, null))) {
+                rowsRemoved++;
+                b--;
+            }
+            if (b>=0 && rowsRemoved>0) {
+                moveRow(b, a);
+            } else if (rowsRemoved>0) {
+                fillRow(a, null);
+            }
+            a--;
+            b--; 
+        }
+        return rowsRemoved;
+    }
+
+    private <E> boolean checkElementInRow(int row, E elem) {
+
+        for (int i = 0; i<getCols(); i++ ) {
+            if (get(new Coordinate(row,i))==elem) {
+                return true;
+            } else if (get(new Coordinate(row,i)).equals(elem)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void fillRow(int row, Tile tile) {
+        for (int i = 0; i < getCols(); i++) {
+            set(new Coordinate(row,i), tile);
+        }
+    }
+
+    private void moveRow(int fromRow, int toRow) {
+        for (int i = 0; i<getCols(); i++) {
+            set(new Coordinate(toRow,i), get(new Coordinate(fromRow,i)));
+        }
+    }
 }
