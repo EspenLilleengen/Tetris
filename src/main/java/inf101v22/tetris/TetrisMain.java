@@ -9,6 +9,9 @@ import inf101v22.tetris.view.TetrisView;
 import java.awt.event.KeyListener;
 
 //TODO: make better tests (String.contains())
+//Paint the buttom of the game over piece
+//make it possible to hold a piece
+//Enshure modularyity (interfaces in the right package)
 
 public class TetrisMain {
     public static final String WINDOW_TITLE = "INF101 Tetris";

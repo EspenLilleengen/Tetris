@@ -33,4 +33,7 @@ public interface TetrisViewable {
     /**@return the game screen status of the object */
     GameScreen getGameScreen();
 
+    /**@return the score at the cuurent state of the game */
+    int getScore();
+
 }

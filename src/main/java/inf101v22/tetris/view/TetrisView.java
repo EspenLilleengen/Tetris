@@ -37,6 +37,7 @@ public class TetrisView extends JComponent{
 
         drawTetrisBoard(canvas, 4, 4, windowWidth-2*4, windowHeight-2*4, 2);
         drawTetrisPiece(canvas, 4, 4, windowWidth-2*4, windowHeight-2*4, 2);
+        
 
         if (viewable.getGameScreen()==GameScreen.GAME_OVER) {
             drawGameOver(canvas, windowWidth, windowHeight);
@@ -104,10 +105,12 @@ public class TetrisView extends JComponent{
         canvas.setColor(new Color(0, 0, 0, 128));
         canvas.fillRect(0, 0, windowWidth, windowHeight);
         canvas.setColor(Color.WHITE);
-        Font myFont = new Font("SansSerif", Font.BOLD,30);
-        canvas.setFont(myFont);
+        Font gameOverFont = new Font("SansSerif", Font.BOLD,30);
+        Font scoreFont = new Font("SansSerif", Font.BOLD,20);
+        canvas.setFont(gameOverFont);
         GraphicHelperMethods.drawCenteredString(canvas, "Game over", 0, 0, windowWidth, windowHeight);
-
+        canvas.setFont(scoreFont);
+        GraphicHelperMethods.drawCenteredString(canvas, "Score: " + viewable.getScore(), 0, 50, windowWidth, windowHeight-50);
     }
 
     @Override

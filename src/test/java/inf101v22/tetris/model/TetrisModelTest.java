@@ -33,11 +33,10 @@ public class TetrisModelTest {
     void modelSanityTest() {
         TetrisModel model = new TetrisModel(new PositionedPieceFactory(PositionedPieceFactoryTest.positionedPieces));
 
-        String testString = "g---TTT--y\n-----T----\n";
-        for (int i = 0; i <12; i++) {
+        String testString = "----TTT---\n-----T----\n";
+        for (int i = 0; i <13; i++) {
             testString += "----------\n";
         }
-        testString += "r--------b\n";
 
         String modelString = TetrisBoard.charArray2dToString(model.addPieceToCharArray2d());
 
@@ -92,13 +91,13 @@ public class TetrisModelTest {
 
         String modelString = TetrisBoard.charArray2dToString(model.addPieceToCharArray2d());
 
-        String testString = "g--------y\n";
+        String testString = "----------\n";
 
         for (int i = 0; i <12; i++) {
             testString += "----------\n";
         }
 
-        testString += "----TTT---\nr----T---b\n";
+        testString += "----TTT---\n-----T----\n";
 
         assertEquals(testString, modelString);
     }
@@ -122,10 +121,37 @@ public class TetrisModelTest {
         String modelString1 = TetrisBoard.charArray2dToString(Arrays.copyOfRange(model.addPieceToCharArray2d(), 13, 15));
         String modelString2 = TetrisBoard.charArray2dToString(Arrays.copyOfRange(model.addPieceToCharArray2d(), 0, 2));
 
-        String expectedString1 = "----TTT---\nr----T---b\n";
-        String expectedString2 = "g-----OO-y\n------OO--\n";
+        String expectedString1 = "----TTT---\n-----T----\n";
+        String expectedString2 = "------OO--\n------OO--\n";
 
         assertEquals(expectedString1, modelString1);
         assertEquals(expectedString2, modelString2);
+    }
+
+    @Test
+    void getTimeIntervalTest() {
+        TetrisModel model = new TetrisModel();
+
+        assertEquals(2000, model.getDelay());
+
+        model.dropFallingPiece();
+        model.dropFallingPiece();
+
+        int delay =  (int) (2000 * Math.pow(0.98,2));
+
+        assertEquals(delay, model.getDelay());
+    }
+
+    @Test
+    void clockTickTest() {
+        TetrisModel model = new TetrisModel(new PositionedPieceFactory(PositionedPieceFactoryTest.positionedPieces));
+        for (int i = 0; i<15;i++) {
+            model.clockTick();
+        }
+
+        String modelString = TetrisBoard.charArray2dToString(Arrays.copyOfRange(model.addPieceToCharArray2d(), 13, 15));
+        String expectedString = "----TTT---\n-----T----\n";
+
+        assertEquals(modelString, expectedString);
     }
 }

@@ -10,4 +10,4 @@ For å fullføre laben, ber vi deg om å svare på følgende spørsmål. Svar p�
 
 ## Hvilke grep gjør vi for å øke modulariteten i koden? Gi noen eksempeler.
 
-<!-- ditt svar her  -->
+<!-- ditt svar her  -->   

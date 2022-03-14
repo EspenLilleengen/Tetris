@@ -1,9 +1,11 @@
 package inf101v22.tetris.controller;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-
+import javax.swing.Timer;
 import javax.swing.JComponent;
 
+import inf101v22.tetris.midi.TetrisSong;
 import inf101v22.tetris.model.GameScreen;
 
 /**
@@ -11,10 +13,13 @@ import inf101v22.tetris.model.GameScreen;
  * 
  * @author Espen Lilleengen
  */
-public class TetrisController implements java.awt.event.KeyListener {
+public class TetrisController implements java.awt.event.KeyListener, java.awt.event.ActionListener {
 
     private TetrisControllable model;
     private JComponent view;
+    private Timer timer;
+    private TetrisSong tetrisSong = new TetrisSong();
+    
     
     /**
      * Construct a new TetrisController with the the given arguments.
@@ -25,6 +30,9 @@ public class TetrisController implements java.awt.event.KeyListener {
          this.model = model;
          this.view = view;
          view.addKeyListener(this);
+         timer = new Timer(model.getDelay(), this);
+         timer.start();
+         tetrisSong.run();
     }
 
 
@@ -41,7 +49,9 @@ public class TetrisController implements java.awt.event.KeyListener {
             model.moveFallingPiece(0, 1);
         }
         else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
-            model.moveFallingPiece(1, 0);
+             if (model.moveFallingPiece(1, 0)) {
+                 timer.restart();
+             }
         }
         else if (e.getKeyCode()==KeyEvent.VK_SHIFT) { //my up-key is broken;(
             model.rotateFallingPiece();
@@ -59,4 +69,18 @@ public class TetrisController implements java.awt.event.KeyListener {
     public void keyReleased(KeyEvent e) {}
 
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (model.getGameScreen()==GameScreen.ACTIVE_GAME) {
+            model.clockTick();
+            view.repaint();
+            setTimerDelay();
+        }
+    }
+
+    private void setTimerDelay() {
+        int delay = model.getDelay();
+        timer.setDelay(delay);
+        timer.setInitialDelay(delay);
+    }
 }

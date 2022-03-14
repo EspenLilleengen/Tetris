@@ -34,6 +34,12 @@ public interface TetrisControllable {
     /**@return the game screen status of the object */
     GameScreen getGameScreen();
 
+    /** @return the numbber of milliseconds between each timer action*/
+    int getDelay();
 
+    /** Moves the falling piece 1 row down for every timer action. 
+     * If the the piece cannot move down it wil be fixed in place.
+    */
+    void clockTick();
     
 }

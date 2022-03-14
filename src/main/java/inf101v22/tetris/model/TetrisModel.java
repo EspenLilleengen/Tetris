@@ -1,8 +1,5 @@
 package inf101v22.tetris.model;
 
-import java.awt.Color;
-
-import inf101v22.grid.Coordinate;
 import inf101v22.grid.CoordinateItem;
 import inf101v22.tetris.controller.TetrisControllable;
 import inf101v22.tetris.model.piece.PositionedPiece;
@@ -22,6 +19,10 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     private PositionedPieceFactory positionedPieceFactory;
 
     private GameScreen gameScreen;
+
+    private final int initialDelay = 2000;
+    private int numPieces = 0;
+    private int score = 0;
 
     /**
      * Construct a tetris model that holds a {@link TetrisBoard}-object with the width of 10 tiles an a height of 15 tiles
@@ -48,11 +49,6 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
      */
     public TetrisModel(int rows, int cols) {
         this.tetrisBoard = new TetrisBoard(rows,cols);
-        tetrisBoard.set(new Coordinate(0,0), new Tile(Color.GREEN, 'g'));
-        tetrisBoard.set(new Coordinate(0, tetrisBoard.getCols()-1), new Tile(Color.YELLOW, 'y'));
-        tetrisBoard.set(new Coordinate(tetrisBoard.getRows()-1,0), new Tile(Color.RED, 'r'));
-        tetrisBoard.set(new Coordinate(tetrisBoard.getRows()-1, tetrisBoard.getCols()-1), new Tile(Color.BLUE, 'b'));
-
         positionedPieceFactory = new PositionedPieceFactory();
         positionedPieceFactory.setCenterColumn(getCols()/2);
         positionedPiece = positionedPieceFactory.getNextPositionedPiece();
@@ -106,7 +102,6 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     @Override
     public boolean rotateFallingPiece() {
         PositionedPiece candidate = positionedPiece.rotate();
-
         if (positionedPieceLegality(candidate)) {
             this.positionedPiece = candidate;
             return true;
@@ -132,9 +127,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     @Override
     public void dropFallingPiece() {
         while(moveFallingPiece(1,0));
-        fixFallingPiece();
-        tetrisBoard.removeFullRows();
-        getNewPiece();
+        landPiece();
     }
 
     private void getNewPiece() {
@@ -144,6 +137,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
             return;
         }
         this.positionedPiece = newPiece;
+        numPieces++;
     }
 
     private void fixFallingPiece() {
@@ -152,8 +146,32 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         }
     }
 
+    private void landPiece() {
+        fixFallingPiece();
+        int rowsRemoved = tetrisBoard.removeFullRows();
+        score+= rowsRemoved*rowsRemoved;
+        getNewPiece();
+    }
+
     @Override
     public GameScreen getGameScreen() {
         return gameScreen;
+    }
+
+    @Override
+    public int getDelay() {
+        return (int) (initialDelay* Math.pow(0.98, numPieces));
+    }
+
+    @Override
+    public void clockTick() {
+        if (!moveFallingPiece(1, 0)) {
+            landPiece();
+        }
+    }
+
+    @Override
+    public int getScore() {
+        return score;
     }
 }
