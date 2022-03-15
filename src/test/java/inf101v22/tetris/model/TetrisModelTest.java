@@ -66,7 +66,7 @@ public class TetrisModelTest {
         TetrisModel model = new TetrisModel(new PositionedPieceFactory(PositionedPieceFactoryTest.positionedPieces));
 
         List<CoordinateItem<Tile>> items = new ArrayList<>();
-        for (CoordinateItem<Tile> item : model.pieceIterable()) { 
+        for (CoordinateItem<Tile> item : model.activePieceIterable()) { 
             items.add(item);
         }
 
@@ -154,4 +154,27 @@ public class TetrisModelTest {
 
         assertEquals(modelString, expectedString);
     }
+
+    @Test
+    void holdPieceTest() {
+        TetrisModel model = new TetrisModel(new PositionedPieceFactory(PositionedPieceFactoryTest.positionedPieces));
+        model.holdPiece();
+
+        assertEquals(PositionedPieceFactoryTest.positionedPieces[0], model.heldPieceIterable());
+        assertEquals(PositionedPieceFactoryTest.positionedPieces[1], model.activePieceIterable());
+        assertEquals(PositionedPieceFactoryTest.positionedPieces[2], model.nextPieceIterable());
+
+        model.dropFallingPiece();
+        model.holdPiece();
+
+        assertEquals(PositionedPieceFactoryTest.positionedPieces[2], model.heldPieceIterable());
+        assertEquals(PositionedPieceFactoryTest.positionedPieces[0], model.activePieceIterable());
+        assertEquals(PositionedPieceFactoryTest.positionedPieces[3], model.nextPieceIterable());
+    }
+
+    @Test
+    void cannotSwapHeldPieceTwiceTest() {
+        TetrisModel model = new TetrisModel(new PositionedPieceFactory(PositionedPieceFactoryTest.positionedPieces));
+    }
+
 }

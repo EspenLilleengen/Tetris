@@ -41,5 +41,19 @@ public interface TetrisControllable {
      * If the the piece cannot move down it wil be fixed in place.
     */
     void clockTick();
+
+    /** Holds the cuurent tetris piece and swaps the active piece with the held piece.
+     * If no piece is held, the active piece is replaced with the next piece.
+     */
+    void holdPiece();
+
+     /** @return true if the hold action is not blocked and false otherwise */
+    boolean getHoldAction();
+
+    /** Sets {@link holdActionActive} to false. This blocks the hold function from being used*/
+    void blockHoldAction();
+
+    /** Sets {@link holdActionActive} to true. This allows the hold function to be used*/
+    void unblockHoldAction();
     
 }

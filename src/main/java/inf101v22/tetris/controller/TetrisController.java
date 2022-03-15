@@ -42,6 +42,11 @@ public class TetrisController implements java.awt.event.KeyListener, java.awt.ev
             view.repaint();
             return;
         }
+        else if (e.getKeyCode()==KeyEvent.VK_C && model.getHoldAction()) {
+            model.holdPiece();
+            timer.restart();
+            model.blockHoldAction();
+        }
         else if (e.getKeyCode()==KeyEvent.VK_LEFT) { 
             model.moveFallingPiece(0, -1);
         } 

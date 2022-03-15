@@ -25,10 +25,10 @@ public interface TetrisViewable {
     Iterable<CoordinateItem<Tile>> boardIterable();
 
     /** 
-     * An iterator over the coordinates in the current Tetris-piece 
+     * An iterable of the coordinates in the current Tetris-piece 
      * @return An iterable of {@link CoordinateItem}-objects with the type parameter {@link Tile}.
     */
-    Iterable<CoordinateItem<Tile>> pieceIterable();
+    Iterable<CoordinateItem<Tile>> activePieceIterable();
 
     /**@return the game screen status of the object */
     GameScreen getGameScreen();
@@ -37,9 +37,16 @@ public interface TetrisViewable {
     int getScore();
 
     /**
-     * An iterator over the coordinates in the next Tetris-piece 
+     * An iterable of the coordinates in the next Tetris-piece 
      * @return An iterable of {@link CoordinateItem}-objects with the type parameter {@link Tile}.
      */
     Iterable<CoordinateItem<Tile>> nextPieceIterable();
+
+    /** 
+     * An iterable of the coordinates in the held Tetris-piece 
+     * @return An iterable of {@link CoordinateItem}-objects with the type parameter {@link Tile}.
+    */
+    Iterable<CoordinateItem<Tile>> heldPieceIterable();
+
 
 }

@@ -13,6 +13,7 @@ public class PositionedPieceFactoryTest {
         new PositionedPiece(PieceShape.T, new Coordinate(0,4)), 
         new PositionedPiece(PieceShape.O, new Coordinate(0,4)), 
         new PositionedPiece(PieceShape.I, new Coordinate(0,3)),
+        new PositionedPiece(PieceShape.L, new Coordinate(0,3)),
     };
 
     @Test

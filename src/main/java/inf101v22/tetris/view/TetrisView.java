@@ -44,12 +44,50 @@ public class TetrisView extends JComponent{
         drawTetrisPiece(canvas, 4, 4, boardWidth-2*4, boardHeight-2*4, 2);
         drawScoreCount(canvas, boardWidth-3, 6, panelWidth, panelHeight/2);
         drawNextPiece(canvas, boardWidth -3, 8+panelHeight/2, panelWidth, panelHeight);
+        drawHeldPiece(canvas, boardWidth -3, 10+panelHeight+panelHeight/2-panelHeight/10, panelWidth, panelHeight);
         
         if (viewable.getGameScreen()==GameScreen.GAME_OVER) {
             drawGameOver(canvas, windowWidth, windowHeight);
         }
     }
 
+    private void drawTetrisBoard(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding) {
+        drawBoardWithRightBottomPadding(g, xBoard+2, yBoard+2, boardWidth, boardHeight, boardPadding);
+    }
+
+    private void drawNextPiece(Graphics g, int x, int y, int panelWidth, int panelHeight) {
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(x, y, panelWidth, panelHeight - panelHeight/10);
+        drawSidePanelString(g, "Next piece:", x, y,panelWidth, panelHeight);
+        drawSidePanelPiece(g, x, y, panelWidth, panelHeight, viewable.nextPieceIterable());
+    }
+
+    private void drawGameOver(Graphics canvas, int windowWidth, int windowHeight) {
+        canvas.setColor( new Color(0xff, 0, 0, 0x80));
+        canvas.fillRect(0, 0, windowWidth, windowHeight);
+        canvas.setColor(Color.WHITE);
+        Font gameOverFont = new Font("SansSerif", Font.BOLD,30);
+        Font scoreFont = new Font("SansSerif", Font.BOLD,20);
+        canvas.setFont(gameOverFont);
+        GraphicHelperMethods.drawCenteredString(canvas, "Game over", 0, 0, windowWidth, windowHeight);
+        canvas.setFont(scoreFont);
+        GraphicHelperMethods.drawCenteredString(canvas, "Score: " + viewable.getScore(), 0, 50, windowWidth, windowHeight-50);
+    }
+
+
+    private void drawScoreCount(Graphics g, int x, int y, int panelWidth, int panelHeight) {
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(x, y, panelWidth, panelHeight);
+        drawSidePanelString(g, "Score: ", x, y,panelWidth, panelHeight);
+        drawSidePanelString(g,""+viewable.getScore(), x, y+15, panelWidth, panelHeight);
+    }
+
+    private void drawHeldPiece(Graphics g, int x, int y, int panelWidth, int panelHeight) {
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(x, y, panelWidth, panelHeight);
+        drawSidePanelString(g, "Held piece:", x, y, panelWidth, panelHeight);
+        drawSidePanelPiece(g, x, y, panelWidth, panelHeight, viewable.heldPieceIterable());
+    }
 
     private void drawTetrisPiece(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding) {
         int rows = viewable.getRows();
@@ -57,7 +95,7 @@ public class TetrisView extends JComponent{
         boardHeight-=boardPadding;
         boardWidth-=boardPadding;
 
-        for (CoordinateItem<Tile> cItem : viewable.pieceIterable()) {
+        for (CoordinateItem<Tile> cItem : viewable.activePieceIterable()) {
             int row = cItem.getRow();
             int col = cItem.getCol();
             Color color = cItem.item.color;
@@ -71,12 +109,6 @@ public class TetrisView extends JComponent{
             drawTileWithRightBottomPadding(g, tileX+2, tileY+2, tileWidth, tileHeight, 2, color);
         }
     }
-
-
-    private void drawTetrisBoard(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding) {
-        drawBoardWithRightBottomPadding(g, xBoard+2, yBoard+2, boardWidth, boardHeight, boardPadding);
-    }
-
 
     private void drawBoardWithRightBottomPadding(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding) {
         int rows = viewable.getRows();
@@ -112,31 +144,9 @@ public class TetrisView extends JComponent{
     }
 
 
-    private void drawGameOver(Graphics canvas, int windowWidth, int windowHeight) {
-        canvas.setColor( new Color(0xff, 0, 0, 0x80));
-        canvas.fillRect(0, 0, windowWidth, windowHeight);
-        canvas.setColor(Color.WHITE);
-        Font gameOverFont = new Font("SansSerif", Font.BOLD,30);
-        Font scoreFont = new Font("SansSerif", Font.BOLD,20);
-        canvas.setFont(gameOverFont);
-        GraphicHelperMethods.drawCenteredString(canvas, "Game over", 0, 0, windowWidth, windowHeight);
-        canvas.setFont(scoreFont);
-        GraphicHelperMethods.drawCenteredString(canvas, "Score: " + viewable.getScore(), 0, 50, windowWidth, windowHeight-50);
-    }
-
-
-    private void drawScoreCount(Graphics g, int x, int y, int panelWidth, int panelHeight) {
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(x, y, panelWidth, panelHeight);
+    private void drawSidePanelString(Graphics g, String s, int x, int y, int panelWidth, int panelHeight) {
         g.setColor(Color.BLACK);
-        Font scoreFont = new Font("SansSerif", Font.BOLD,15);
-
-        drawSidePanelString(g, "Score: ", x, y,panelWidth, panelHeight, scoreFont);
-        drawSidePanelString(g,""+viewable.getScore(), x, y+15, panelWidth, panelHeight, scoreFont);
-    }
-
-
-    private void drawSidePanelString(Graphics g, String s, int x, int y, int panelWidth, int panelHeight, Font f) {
+        Font f = new Font("SansSerif", Font.BOLD,15);
         g.setFont(f);
 
         int stringWidth = GraphicHelperMethods.getStringWidth(g, f, s);
@@ -147,17 +157,13 @@ public class TetrisView extends JComponent{
         g.drawString(s, scoreX, scoreY);
     }
 
-
-    private void drawNextPiece(Graphics g, int x, int y, int panelWidth, int panelHeight) {
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(x, y, panelWidth, panelHeight - panelHeight/10);
-        g.setColor(Color.BLACK);
-        Font nextPieceFont = new Font("SansSerif", Font.BOLD,15);
-        drawSidePanelString(g, "Next piece:", x, y,panelWidth, panelHeight, nextPieceFont);
-
+    private void drawSidePanelPiece(Graphics g, int x, int y, int panelWidth, int panelHeight, Iterable<CoordinateItem<Tile>> iterable) {
+        if (iterable == null) {
+            return;
+        }
         x-=panelWidth/9;
         int z = 0;
-        for (CoordinateItem<Tile> cItem : viewable.nextPieceIterable()) {
+        for (CoordinateItem<Tile> cItem : iterable) {
             int row = cItem.getRow()+1;
             int col = cItem.getCol()-3;
             Color color = cItem.item.color;

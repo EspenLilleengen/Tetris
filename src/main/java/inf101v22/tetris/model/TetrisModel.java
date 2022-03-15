@@ -15,9 +15,12 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
 
     private final TetrisBoard tetrisBoard;
 
-    private PositionedPiece positionedPiece;
+    private PositionedPiece activePiece;
+    private PositionedPiece originalActivePiece;
     private PositionedPiece nextPiece;
+    private PositionedPiece heldPiece;
     private PositionedPieceFactory positionedPieceFactory;
+    private boolean holdActionActive = true;
 
     private GameScreen gameScreen;
 
@@ -40,7 +43,8 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     public TetrisModel(PositionedPieceFactory positionedPieceFactory) {
         this(15,10);
         this.positionedPieceFactory=positionedPieceFactory;
-        positionedPiece = positionedPieceFactory.getNextPositionedPiece();
+        activePiece = positionedPieceFactory.getNextPositionedPiece();
+        originalActivePiece=activePiece;
         nextPiece = positionedPieceFactory.getNextPositionedPiece();
     }
 
@@ -53,7 +57,8 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         this.tetrisBoard = new TetrisBoard(rows,cols);
         positionedPieceFactory = new PositionedPieceFactory();
         positionedPieceFactory.setCenterColumn(getCols()/2);
-        positionedPiece = positionedPieceFactory.getNextPositionedPiece();
+        activePiece = positionedPieceFactory.getNextPositionedPiece();
+        originalActivePiece=activePiece;
         nextPiece = positionedPieceFactory.getNextPositionedPiece();
         gameScreen = GameScreen.ACTIVE_GAME;
     }
@@ -78,7 +83,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
      */
     public char[][] addPieceToCharArray2d() {
         char[][] charArray2d = tetrisBoard.toCharArray2d();
-        for (CoordinateItem<Tile> coordinateItem : positionedPiece) {
+        for (CoordinateItem<Tile> coordinateItem : activePiece) {
             charArray2d[coordinateItem.getRow()][coordinateItem.getCol()] = coordinateItem.item.character;
         }
 
@@ -86,16 +91,16 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     }
 
     @Override
-    public Iterable<CoordinateItem<Tile>> pieceIterable() {
-        return positionedPiece; 
+    public Iterable<CoordinateItem<Tile>> activePieceIterable() {
+        return activePiece; 
     }
 
     @Override
     public boolean moveFallingPiece(int deltaRow, int deltaCol) {
-        PositionedPiece candidate = positionedPiece.copyTo(deltaRow, deltaCol);
+        PositionedPiece candidate = activePiece.copyTo(deltaRow, deltaCol);
     
         if (positionedPieceLegality(candidate)) {
-            this.positionedPiece = candidate;
+            this.activePiece = candidate;
             return true;
         }
         return false;
@@ -104,9 +109,9 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
 
     @Override
     public boolean rotateFallingPiece() {
-        PositionedPiece candidate = positionedPiece.rotate();
+        PositionedPiece candidate = activePiece.rotate();
         if (positionedPieceLegality(candidate)) {
-            this.positionedPiece = candidate;
+            this.activePiece = candidate;
             return true;
         }
         return false;
@@ -139,13 +144,15 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
             gameScreen = GameScreen.GAME_OVER;
             return;
         }
-        this.positionedPiece = nextPiece;
+        this.activePiece = nextPiece;
         this.nextPiece = newPiece;
+        originalActivePiece = activePiece;
         numPieces++;
+        unblockHoldAction();
     }
 
     private void fixFallingPiece() {
-        for (CoordinateItem<Tile> cItem : positionedPiece) {
+        for (CoordinateItem<Tile> cItem : activePiece) {
             tetrisBoard.set(cItem.coordinate, cItem.item);
         }
     }
@@ -182,5 +189,37 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     @Override
     public Iterable<CoordinateItem<Tile>> nextPieceIterable() {
         return nextPiece;
+    }
+
+    @Override
+    public Iterable<CoordinateItem<Tile>> heldPieceIterable() {
+        return heldPiece;
+    }
+
+    @Override
+    public void holdPiece() {
+        if (heldPiece==null) {
+            heldPiece=originalActivePiece;
+            getNewPiece();
+            return;
+        } 
+        PositionedPiece temp = heldPiece;
+        heldPiece = originalActivePiece;
+        activePiece = temp;
+    }
+
+    @Override
+    public boolean getHoldAction() {
+        return holdActionActive;
+    }
+
+    @Override
+    public void blockHoldAction() {
+        holdActionActive = false;
+    }
+
+    @Override
+    public void unblockHoldAction() {
+        holdActionActive = true;
     }
 }
