@@ -6,7 +6,8 @@ package inf101v22.tetris.model;
  * @author Espen Lilleengen
  */
 public enum GameScreen {
+    PAUSE,
+    WELCOME,
     ACTIVE_GAME, 
     GAME_OVER;
-    
 }

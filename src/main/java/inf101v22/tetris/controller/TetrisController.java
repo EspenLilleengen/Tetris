@@ -7,6 +7,7 @@ import javax.swing.JComponent;
 
 import inf101v22.tetris.midi.TetrisSong;
 import inf101v22.tetris.model.GameScreen;
+import inf101v22.tetris.model.TetrisModel;
 
 /**
  * Controls the data flow into {@link TetrisModel} and updates the {@link TetrisView} whenever data changes. 
@@ -31,14 +32,37 @@ public class TetrisController implements java.awt.event.KeyListener, java.awt.ev
          this.view = view;
          view.addKeyListener(this);
          timer = new Timer(model.getDelay(), this);
-         timer.start();
-        //  tetrisSong.run();
     }
-
 
     @Override
     public void keyPressed(KeyEvent e) {
         if (model.getGameScreen()==GameScreen.GAME_OVER) {
+            if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+                tetrisSong.doStopMidiSounds();
+                model.setGameScreen(GameScreen.WELCOME);
+                model.resetBoard();
+            }
+            view.repaint();
+            return;
+        }
+        else if (model.getGameScreen()==GameScreen.WELCOME) {
+            if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+                tetrisSong.run();
+                model.setGameScreen(GameScreen.ACTIVE_GAME);
+                timer.start();
+            }
+            view.repaint();
+            return;
+        }
+        else if (model.getGameScreen() == GameScreen.PAUSE) {
+            if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+                tetrisSong.doUnpauseMidiSounds();
+                model.setGameScreen(GameScreen.ACTIVE_GAME);
+            }
+        }
+        else if (e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+            tetrisSong.doPauseMidiSounds();
+            model.setGameScreen(GameScreen.PAUSE);
             view.repaint();
             return;
         }

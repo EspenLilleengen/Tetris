@@ -48,6 +48,12 @@ public class TetrisView extends JComponent{
         
         if (viewable.getGameScreen()==GameScreen.GAME_OVER) {
             drawGameOver(canvas, windowWidth, windowHeight);
+        } 
+        else if (viewable.getGameScreen()==GameScreen.WELCOME) {
+            drawWelcomeScreen(canvas, windowWidth, windowHeight);
+        }
+        else if (viewable.getGameScreen()==GameScreen.PAUSE) { 
+            drawPauseScreen(canvas, windowWidth, windowHeight);
         }
     }
 
@@ -63,17 +69,23 @@ public class TetrisView extends JComponent{
     }
 
     private void drawGameOver(Graphics canvas, int windowWidth, int windowHeight) {
-        canvas.setColor( new Color(0xff, 0, 0, 0x80));
-        canvas.fillRect(0, 0, windowWidth, windowHeight);
-        canvas.setColor(Color.WHITE);
-        Font gameOverFont = new Font("SansSerif", Font.BOLD,30);
-        Font scoreFont = new Font("SansSerif", Font.BOLD,20);
-        canvas.setFont(gameOverFont);
-        GraphicHelperMethods.drawCenteredString(canvas, "Game over", 0, 0, windowWidth, windowHeight);
-        canvas.setFont(scoreFont);
-        GraphicHelperMethods.drawCenteredString(canvas, "Score: " + viewable.getScore(), 0, 50, windowWidth, windowHeight-50);
+        fillScreem(canvas, windowWidth, windowHeight, new Color(0xff, 0, 0, 0x80));
+        drawWindowString(canvas, "Game over", 0, 0, windowWidth, windowHeight, 30);
+        drawWindowString(canvas, "Score: "+viewable.getScore(), 0, 50, windowWidth, windowHeight, 20);
+        drawWindowString(canvas, "press enter to return to welcome screen", 0, 100, windowWidth, windowHeight, 18);
     }
 
+    private void drawWelcomeScreen(Graphics canvas, int windowWidth, int windowHeight) {
+        fillScreem(canvas, windowWidth, windowHeight, Color.BLUE);
+        drawWindowString(canvas, "Welcome", 0, 0, windowWidth, windowHeight, 35);
+        drawWindowString(canvas, "press enter to begin", 0, 50, windowWidth, windowHeight, 18);
+    }
+
+    private void drawPauseScreen(Graphics g, int windowWidth, int windowHeight) {
+        fillScreem(g, windowWidth, windowHeight, new Color(0, 0, 0, 128));
+        drawWindowString(g, "Paused", 0, 0, windowWidth, windowHeight, 35);
+        drawWindowString(g, "press enter to unpause", 0, 50, windowWidth, windowHeight, 18);
+    }
 
     private void drawScoreCount(Graphics g, int x, int y, int panelWidth, int panelHeight) {
         g.setColor(Color.LIGHT_GRAY);
@@ -183,7 +195,18 @@ public class TetrisView extends JComponent{
         }
     }
 
-    
+    private void fillScreem(Graphics canvas, int windowWidth, int windowHeight, Color color) {
+        canvas.setColor(color);
+        canvas.fillRect(0, 0, windowWidth, windowHeight);
+    }
+
+    private void drawWindowString(Graphics g, String s, int x, int y, int windowWidth, int windowHeight, int fontSize) {
+        g.setColor(Color.WHITE);
+        Font f = new Font("SansSerif", Font.BOLD, fontSize);
+        g.setFont(f);
+        GraphicHelperMethods.drawCenteredString(g, s, x, y, windowWidth, windowHeight);
+    }
+
     @Override
     public Dimension getPreferredSize() {
         int columns = viewable.getCols();

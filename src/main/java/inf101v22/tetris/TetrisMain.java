@@ -15,6 +15,7 @@ import java.awt.event.KeyListener;
 
 public class TetrisMain {
     public static final String WINDOW_TITLE = "INF101 Tetris";
+    
 
     public static void main(String[] args) {
         TetrisModel tetrisModel = new TetrisModel();

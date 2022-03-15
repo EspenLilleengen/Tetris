@@ -13,7 +13,7 @@ import inf101v22.tetris.view.TetrisViewable;
  */
 public class TetrisModel implements TetrisViewable, TetrisControllable{
 
-    private final TetrisBoard tetrisBoard;
+    private TetrisBoard tetrisBoard;
 
     private PositionedPiece activePiece;
     private PositionedPiece originalActivePiece;
@@ -60,7 +60,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         activePiece = positionedPieceFactory.getNextPositionedPiece();
         originalActivePiece=activePiece;
         nextPiece = positionedPieceFactory.getNextPositionedPiece();
-        gameScreen = GameScreen.ACTIVE_GAME;
+        gameScreen = GameScreen.WELCOME;
     }
 
     @Override
@@ -221,5 +221,22 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     @Override
     public void unblockHoldAction() {
         holdActionActive = true;
+    }
+
+    @Override
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen=gameScreen;
+    }
+
+    @Override
+    public void resetBoard() {
+        tetrisBoard = new TetrisBoard(15,10);
+        score=0;
+        numPieces=0;
+        heldPiece=null;
+        activePiece = positionedPieceFactory.getNextPositionedPiece();
+        originalActivePiece=activePiece;
+        nextPiece = positionedPieceFactory.getNextPositionedPiece();
+        holdActionActive=true;
     }
 }

@@ -34,6 +34,12 @@ public interface TetrisControllable {
     /**@return the game screen status of the object */
     GameScreen getGameScreen();
 
+    /**
+     * Sets the game screen to the given argument 
+     * @param gameScreen the screen status to be set
+    */
+    void setGameScreen(GameScreen gameScreen);
+
     /** @return the numbber of milliseconds between each timer action*/
     int getDelay();
 
@@ -55,5 +61,8 @@ public interface TetrisControllable {
 
     /** Sets {@link holdActionActive} to true. This allows the hold function to be used*/
     void unblockHoldAction();
+
+    /**Resets the teris boards and all the game data */
+    void resetBoard();
     
 }
