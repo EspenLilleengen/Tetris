@@ -16,6 +16,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     private final TetrisBoard tetrisBoard;
 
     private PositionedPiece positionedPiece;
+    private PositionedPiece nextPiece;
     private PositionedPieceFactory positionedPieceFactory;
 
     private GameScreen gameScreen;
@@ -39,7 +40,8 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     public TetrisModel(PositionedPieceFactory positionedPieceFactory) {
         this(15,10);
         this.positionedPieceFactory=positionedPieceFactory;
-        positionedPiece= positionedPieceFactory.getNextPositionedPiece();
+        positionedPiece = positionedPieceFactory.getNextPositionedPiece();
+        nextPiece = positionedPieceFactory.getNextPositionedPiece();
     }
 
     /**
@@ -52,6 +54,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         positionedPieceFactory = new PositionedPieceFactory();
         positionedPieceFactory.setCenterColumn(getCols()/2);
         positionedPiece = positionedPieceFactory.getNextPositionedPiece();
+        nextPiece = positionedPieceFactory.getNextPositionedPiece();
         gameScreen = GameScreen.ACTIVE_GAME;
     }
 
@@ -136,7 +139,8 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
             gameScreen = GameScreen.GAME_OVER;
             return;
         }
-        this.positionedPiece = newPiece;
+        this.positionedPiece = nextPiece;
+        this.nextPiece = newPiece;
         numPieces++;
     }
 
@@ -173,5 +177,10 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     @Override
     public int getScore() {
         return score;
+    }
+
+    @Override
+    public Iterable<CoordinateItem<Tile>> nextPieceIterable() {
+        return nextPiece;
     }
 }
