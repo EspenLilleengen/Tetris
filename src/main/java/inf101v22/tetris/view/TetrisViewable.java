@@ -4,6 +4,7 @@ package inf101v22.tetris.view;
 import inf101v22.grid.CoordinateItem;
 import inf101v22.tetris.model.GameScreen;
 import inf101v22.tetris.model.Tile;
+import inf101v22.tetris.model.scoreboard.Score;
 
 /**
  * Implementing this interface allows an object to be used to draw a tetris board by {@link TetrisView}
@@ -47,6 +48,20 @@ public interface TetrisViewable {
      * @return An iterable of {@link CoordinateItem}-objects with the type parameter {@link Tile}.
     */
     Iterable<CoordinateItem<Tile>> heldPieceIterable();
+
+    /** 
+     * An iterable of the coordinates in the ghost Tetris-piece 
+     * @return An iterable of {@link CoordinateItem}-objects with the type parameter {@link Tile}.
+    */
+    Iterable<CoordinateItem<Tile>> ghostPieceIterable();
+
+    /**
+     * An iterable over the scores of the game
+     * @return An iterable of scores  
+      */
+      Iterable<Score> scoreIterable();
+
+
 
 
 }

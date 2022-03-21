@@ -2,6 +2,7 @@ package inf101v22.tetris.model.piece;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 import inf101v22.grid.Coordinate;
@@ -43,7 +44,7 @@ public class PositionedPiece implements Iterable<CoordinateItem<Tile>>{
 
     @Override
     public Iterator<CoordinateItem<Tile>> iterator() {
-        ArrayList<CoordinateItem<Tile>> coordinateItemsIterable = new ArrayList<>();
+        List<CoordinateItem<Tile>> coordinateItemsIterable = new ArrayList<>();
         boolean[][] shape = pieceShape.getShape();
 
         for (int row = coordinate.row; row < coordinate.row + getHeight(); row++) {
@@ -56,6 +57,51 @@ public class PositionedPiece implements Iterable<CoordinateItem<Tile>>{
         }
         return coordinateItemsIterable.iterator();
     }
+
+    /** 
+     * Makes a copy of the object, but moved up/down acording to the given arguments
+     * 
+     * @param deltaRow where to move the new object along the row
+     * @param deltaColumn where to move the new object along the column
+     * @return The copy of the object, with new Coordinates
+    */
+    public PositionedPiece copyTo(int deltaRow, int deltaColumn) {
+        return new PositionedPiece(pieceShape, new Coordinate(coordinate.row+deltaRow, coordinate.col+deltaColumn));
+     }
+
+     /**
+     * Rotates a piece to the left around its center
+     * @return the rotated and positioned piece 
+     */
+     public PositionedPiece rotateLeft() {
+         return rotate(false);
+     }
+
+     /**
+     * Rotates a piece to the right around its center
+     * @return the rotated and positioned piece 
+     */
+    public PositionedPiece rotateRight() {
+        return rotate(true);
+    }
+
+    private PositionedPiece rotate(boolean doesRotateRight) {
+        PositionedPiece rotatedPiece;
+        if (doesRotateRight) {
+            rotatedPiece = new PositionedPiece(pieceShape.rotateRight(), coordinate);
+        } else {
+            rotatedPiece = new PositionedPiece(pieceShape.rotateLeft(), coordinate);
+        }
+
+        int oldCenterRow = coordinate.row + getHeight()/2;
+        int oldCenterCol = coordinate.col + getWidth()/2;
+        int newCenterRow = rotatedPiece.coordinate.row + rotatedPiece.getHeight()/2;
+        int newCenterCol = rotatedPiece.coordinate.col + rotatedPiece.getWidth()/2;
+        int deltaRow = oldCenterRow-newCenterRow;
+        int deltaCol = oldCenterCol-newCenterCol;
+
+        return rotatedPiece.copyTo(deltaRow,deltaCol);
+    } 
 
     @Override
     public boolean equals(Object obj) {
@@ -80,37 +126,4 @@ public class PositionedPiece implements Iterable<CoordinateItem<Tile>>{
             ", coordinate='" + coordinate.toString() + "'" +
             "}";
     }
-
-    /** 
-     * Makes a copy of the object, but moved up/down acording to the given arguments
-     * 
-     * @param deltaRow where to move the new object along the row
-     * @param deltaColumn where to move the new object along the column
-     * @return The copy of the object, with new Coordinates
-    */
-    public PositionedPiece copyTo(int deltaRow, int deltaColumn) {
-        return new PositionedPiece(pieceShape, new Coordinate(coordinate.row+deltaRow, coordinate.col+deltaColumn));
-     }
-
-    /**
-     * Rotates a piece around its center
-     * 
-     * @return the rotated and positioned piece 
-     */
-    public PositionedPiece rotate() {
-        PositionedPiece rotatedPiece = new PositionedPiece(pieceShape.rotate(), coordinate);
-
-        int oldCenterRow = coordinate.row + getHeight()/2;
-        int oldCenterCol = coordinate.col + getWidth()/2;
-        int newCenterRow = rotatedPiece.coordinate.row + rotatedPiece.getHeight()/2;
-        int newCenterCol = rotatedPiece.coordinate.col + rotatedPiece.getWidth()/2;
-
-        int deltaRow = oldCenterRow-newCenterRow;
-        int deltaCol = oldCenterCol-newCenterCol;
-        
-        
-
-        return rotatedPiece.copyTo(deltaRow,deltaCol);
-
-    } 
 }

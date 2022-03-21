@@ -100,10 +100,10 @@ public class PieceShape {
     }
 
     /**
-     * Roates the shape of the teris piece
+     * Roates the shape of the teris piece to the left
      * @return a 2 dimentional boolean array of the rotatet shape
      */
-    public PieceShape rotate() { 
+    public PieceShape rotateLeft() { 
         boolean[][] rotatedShape = new boolean[getWidth()][getHeight()];
 
         for (int i = 0; i <getWidth(); i++) { 
@@ -113,6 +113,22 @@ public class PieceShape {
         }
         return new PieceShape(getTile(), rotatedShape);
     }
+
+    /**
+     * Roates the shape of the teris piece to the right
+     * @return a 2 dimentional boolean array of the rotatet shape
+     */
+    public PieceShape rotateRight() {
+        boolean[][] rotatedShape = new boolean[getWidth()][getHeight()];
+
+        for (int i = 0; i < getWidth(); i++) {
+            for (int j = 0; j < getHeight(); j++) {
+                rotatedShape[i][getHeight()-1-j] = getShape()[j][i];
+            }
+        }
+        return new PieceShape(getTile(), rotatedShape);
+    }
+
 
 
     @Override

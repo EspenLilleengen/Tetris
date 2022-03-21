@@ -35,10 +35,10 @@ public class PieceShapeTest {
         PieceShape Ipiece = PieceShape.I;
         PieceShape Zpiece = PieceShape.Z;
 
-        PieceShape rotatedL = Lpiece.rotate();
-        PieceShape rotatedT = Tpiece.rotate();
-        PieceShape rotatedI = Ipiece.rotate();
-        PieceShape rotatedZ = Zpiece.rotate();
+        PieceShape rotatedL = Lpiece.rotateLeft();
+        PieceShape rotatedT = Tpiece.rotateLeft();
+        PieceShape rotatedI = Ipiece.rotateLeft();
+        PieceShape rotatedZ = Zpiece.rotateLeft();
 
         boolean[][] expectedL = new boolean[][] {
             {true,true},
@@ -90,10 +90,10 @@ public class PieceShapeTest {
 
     @Test
     void rotateMultipleTimesTest() {
-        PieceShape rotated1 = PieceShape.L.rotate();
-        PieceShape rotated2 = rotated1.rotate();
-        PieceShape rotated3 = rotated2.rotate();
-        PieceShape rotated4 = rotated3.rotate();
+        PieceShape rotated1 = PieceShape.L.rotateLeft();
+        PieceShape rotated2 = rotated1.rotateLeft();
+        PieceShape rotated3 = rotated2.rotateLeft();
+        PieceShape rotated4 = rotated3.rotateLeft();
 
         boolean[][] expected1 = new boolean[][] {
             {true,true},

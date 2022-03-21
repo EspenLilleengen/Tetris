@@ -106,7 +106,7 @@ public class TetrisModelTest {
     void getGameScreenTest() {
         TetrisModel testModel = new TetrisModel();
 
-        assertEquals(GameScreen.ACTIVE_GAME, testModel.getGameScreen());
+        assertEquals(GameScreen.WELCOME, testModel.getGameScreen());
     }
 
     @Test
@@ -170,11 +170,6 @@ public class TetrisModelTest {
         assertEquals(PositionedPieceFactoryTest.positionedPieces[2], model.heldPieceIterable());
         assertEquals(PositionedPieceFactoryTest.positionedPieces[0], model.activePieceIterable());
         assertEquals(PositionedPieceFactoryTest.positionedPieces[3], model.nextPieceIterable());
-    }
-
-    @Test
-    void cannotSwapHeldPieceTwiceTest() {
-        TetrisModel model = new TetrisModel(new PositionedPieceFactory(PositionedPieceFactoryTest.positionedPieces));
     }
 
 }

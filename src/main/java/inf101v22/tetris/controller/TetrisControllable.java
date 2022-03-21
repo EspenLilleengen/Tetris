@@ -19,11 +19,18 @@ public interface TetrisControllable {
     boolean moveFallingPiece(int deltaRow, int deltaCol);
 
     /**
-     * Rotates a falling tetris piece
+     * Rotates a falling tetris piece left
      * 
      * @return true if the piece can rotate and false otherwise
      */
-    boolean rotateFallingPiece();
+    boolean rotateFallingPieceLeft();
+
+     /**
+     * Rotates a falling tetris piece right
+     * 
+     * @return true if the piece can rotate and false otherwise
+     */
+    boolean rotateFallingPieceRight();
 
     /**
      * Moves a falling tetris piece down until it reaches an obstacle. 
@@ -64,5 +71,10 @@ public interface TetrisControllable {
 
     /**Resets the teris boards and all the game data */
     void resetBoard();
+
+    /**Saves the score of the game to the scoreboard 
+     * @param name the name of the player who submited the score
+    */
+    void submitScore(String name);
     
 }

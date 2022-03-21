@@ -12,6 +12,10 @@ import java.awt.event.KeyListener;
 //Paint the buttom of the game over piece
 //make it possible to hold a piece
 //Enshure modularyity (interfaces in the right package)
+//Show the controls for the game
+//Add throws/try/catch where relevant, indexoutofboundsexseption
+//Insert location where possible
+//remove boolean where void can be used
 
 public class TetrisMain {
     public static final String WINDOW_TITLE = "INF101 Tetris";

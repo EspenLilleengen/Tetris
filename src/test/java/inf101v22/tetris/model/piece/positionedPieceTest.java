@@ -60,7 +60,7 @@ public class positionedPieceTest {
     void rotateTest() {
         PositionedPiece piece = new PositionedPiece(PieceShape.I, new Coordinate(2, 2));
 
-        PositionedPiece rotatedPiece = piece.rotate();
+        PositionedPiece rotatedPiece = piece.rotateLeft();
 
         int oldCenterRow = piece.coordinate.row + piece.getHeight()/2;
         int oldCenterCol = piece.coordinate.col + piece.getWidth()/2;

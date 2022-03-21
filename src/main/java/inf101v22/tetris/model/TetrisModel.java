@@ -4,6 +4,8 @@ import inf101v22.grid.CoordinateItem;
 import inf101v22.tetris.controller.TetrisControllable;
 import inf101v22.tetris.model.piece.PositionedPiece;
 import inf101v22.tetris.model.piece.PositionedPieceFactory;
+import inf101v22.tetris.model.scoreboard.Score;
+import inf101v22.tetris.model.scoreboard.ScoreBoard;
 import inf101v22.tetris.view.TetrisViewable;
 
 /**
@@ -19,14 +21,16 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     private PositionedPiece originalActivePiece;
     private PositionedPiece nextPiece;
     private PositionedPiece heldPiece;
+    private PositionedPiece ghostPiece;
     private PositionedPieceFactory positionedPieceFactory;
     private boolean holdActionActive = true;
 
     private GameScreen gameScreen;
+    private ScoreBoard scoreBoard;
 
-    private final int initialDelay = 2000;
+    private final int initialDelay = 200000;
     private int numPieces = 0;
-    private int score = 0;
+    private int scoreCount = 0;
 
     /**
      * Construct a tetris model that holds a {@link TetrisBoard}-object with the width of 10 tiles an a height of 15 tiles
@@ -46,6 +50,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         activePiece = positionedPieceFactory.getNextPositionedPiece();
         originalActivePiece=activePiece;
         nextPiece = positionedPieceFactory.getNextPositionedPiece();
+        updateGhostPiece();
     }
 
     /**
@@ -58,9 +63,11 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         positionedPieceFactory = new PositionedPieceFactory();
         positionedPieceFactory.setCenterColumn(getCols()/2);
         activePiece = positionedPieceFactory.getNextPositionedPiece();
+        updateGhostPiece();
         originalActivePiece=activePiece;
         nextPiece = positionedPieceFactory.getNextPositionedPiece();
         gameScreen = GameScreen.WELCOME;
+        scoreBoard = new ScoreBoard("src/main/java/inf101v22/tetris/model/scoreboard/ScoreBoardData.txt");
     }
 
     @Override
@@ -98,30 +105,55 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     @Override
     public boolean moveFallingPiece(int deltaRow, int deltaCol) {
         PositionedPiece candidate = activePiece.copyTo(deltaRow, deltaCol);
-    
-        if (positionedPieceLegality(candidate)) {
-            this.activePiece = candidate;
-            return true;
-        }
-        return false;
-            
+        return assignCanddidate(candidate);     
     }
 
     @Override
-    public boolean rotateFallingPiece() {
-        PositionedPiece candidate = activePiece.rotate();
-        if (positionedPieceLegality(candidate)) {
+    public boolean rotateFallingPieceLeft() {
+        PositionedPiece candidate = activePiece.rotateLeft();
+        return doBounce(candidate);
+    }
+
+    @Override
+    public boolean rotateFallingPieceRight() {
+        PositionedPiece candidate = activePiece.rotateRight();
+        return doBounce(candidate);
+    }
+
+    private boolean doBounce(PositionedPiece candidate) {
+        if (assignCanddidate(candidate)) {
+            return true;
+        }
+       for (int i = 0; i>-2; i--) {
+           for (int j = 0; j<3; j++) {
+                PositionedPiece temp = candidate.copyTo(j, i);
+                if (checkPositionedPieceLegality(temp)) {
+                    return assignCanddidate(temp);
+                }
+           }
+        }
+        for (int i = 0; i<3; i++) {
+            for (int j = 0; j<3; j++) {
+                PositionedPiece temp = candidate.copyTo(j, i);
+                if (checkPositionedPieceLegality(temp)) {
+                    return assignCanddidate(temp);
+                }
+           }
+        }
+        return false;
+    }
+
+    private boolean assignCanddidate(PositionedPiece candidate) {
+        if (checkPositionedPieceLegality(candidate)) {
             this.activePiece = candidate;
+            updateGhostPiece();
             return true;
         }
         return false;
     }
 
-    /** 
-     * Chechs if the next position is legal for the candidate
-     * @return true if the next position is legal and false otherwise
-    */
-    private boolean positionedPieceLegality(PositionedPiece candidate) {
+    /** @return true if the coordinates of the piece is legal and false otherwise*/
+    private boolean checkPositionedPieceLegality(PositionedPiece candidate) {
         for (CoordinateItem<Tile> cItem : candidate) { 
             if (!tetrisBoard.coordinateIsOnGrid(cItem.coordinate)) 
                 return false;
@@ -140,7 +172,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
 
     private void getNewPiece() {
         PositionedPiece newPiece = positionedPieceFactory.getNextPositionedPiece();
-        if (!(positionedPieceLegality(newPiece))) { 
+        if (!(checkPositionedPieceLegality(newPiece))) { 
             gameScreen = GameScreen.GAME_OVER;
             return;
         }
@@ -149,6 +181,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         originalActivePiece = activePiece;
         numPieces++;
         unblockHoldAction();
+        updateGhostPiece();
     }
 
     private void fixFallingPiece() {
@@ -160,7 +193,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     private void landPiece() {
         fixFallingPiece();
         int rowsRemoved = tetrisBoard.removeFullRows();
-        score+= rowsRemoved*rowsRemoved;
+        scoreCount+= rowsRemoved*rowsRemoved;
         getNewPiece();
     }
 
@@ -183,7 +216,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
 
     @Override
     public int getScore() {
-        return score;
+        return scoreCount;
     }
 
     @Override
@@ -206,6 +239,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         PositionedPiece temp = heldPiece;
         heldPiece = originalActivePiece;
         activePiece = temp;
+        updateGhostPiece();
     }
 
     @Override
@@ -231,12 +265,42 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     @Override
     public void resetBoard() {
         tetrisBoard = new TetrisBoard(15,10);
-        score=0;
+        scoreCount=0;
         numPieces=0;
         heldPiece=null;
         activePiece = positionedPieceFactory.getNextPositionedPiece();
         originalActivePiece=activePiece;
         nextPiece = positionedPieceFactory.getNextPositionedPiece();
         holdActionActive=true;
+        updateGhostPiece();
     }
+
+    @Override
+    public Iterable<CoordinateItem<Tile>> ghostPieceIterable() {
+        return ghostPiece;
+    }
+
+    private void updateGhostPiece() {
+        PositionedPiece candidate = activePiece;
+        ghostPiece = candidate;
+        while(true) {
+        candidate = candidate.copyTo(1, 0);
+        if (checkPositionedPieceLegality(candidate)) {
+            ghostPiece = candidate;
+            continue;
+        }
+        break;
+        }
+    }
+
+    @Override
+    public Iterable<Score> scoreIterable() {
+        return scoreBoard;
+    }
+
+    @Override
+    public void submitScore(String name) {
+        scoreBoard.add(new Score(scoreCount, name));
+    }
+
 }
