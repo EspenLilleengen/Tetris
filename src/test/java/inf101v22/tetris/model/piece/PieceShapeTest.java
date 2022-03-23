@@ -29,7 +29,7 @@ public class PieceShapeTest {
     }
 
     @Test
-    void rotateTest() {
+    void rotateLeftTest() {
         PieceShape Lpiece = PieceShape.L;
         PieceShape Tpiece = PieceShape.T;
         PieceShape Ipiece = PieceShape.I;
@@ -89,6 +89,26 @@ public class PieceShapeTest {
     }
 
     @Test
+    void rotateRightTest() {
+        PieceShape rotatedL = PieceShape.L.rotateRight();
+
+        boolean[][] expectedL = new boolean[][] {
+            {true,false},
+            {true,false},
+            {true, true},
+        };
+
+        assertEquals(expectedL.length, rotatedL.getHeight());
+        assertEquals(expectedL[0].length, rotatedL.getWidth());
+
+        for (int i = 0; i <3; i++) {
+            for (int j = 0; j <2; j++) {
+                assertEquals(expectedL[i][j],rotatedL.getShape()[i][j]);
+            }
+        }
+    }
+
+    @Test
     void rotateMultipleTimesTest() {
         PieceShape rotated1 = PieceShape.L.rotateLeft();
         PieceShape rotated2 = rotated1.rotateLeft();
@@ -125,6 +145,9 @@ public class PieceShapeTest {
             }
         }
         assertEquals(PieceShape.L, rotated4);
-
     }
+
+    
+
+
 }

@@ -46,7 +46,8 @@ public class TetrisModelTest {
 
     @Test
     void testBoardIterator() {
-        TetrisViewable model = new TetrisModel();
+        TetrisModel model = new TetrisModel(new PositionedPieceFactory(PositionedPieceFactoryTest.positionedPieces));
+        model.dropFallingPiece();
 
         List<CoordinateItem<Tile>> items = new ArrayList<>();
         for (CoordinateItem<Tile> coordinateItem : model.boardIterable()) {
@@ -54,10 +55,10 @@ public class TetrisModelTest {
         }
 
         assertEquals(15 * 10, items.size());
-        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(0, 0), new Tile(Color.GREEN, 'g'))));
-        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(14,0), new Tile(Color.RED, 'r'))));
-        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(0,9), new Tile(Color.YELLOW, 'y'))));
-        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(14,9), new Tile(Color.BLUE, 'b'))));
+        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(13,4), new Tile(Color.GREEN, 'T'))));
+        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(13,5), new Tile(Color.GREEN, 'T'))));
+        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(13,6), new Tile(Color.GREEN, 'T'))));
+        assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(14,5), new Tile(Color.GREEN, 'T'))));
         assertTrue(items.contains(new CoordinateItem<Tile>(new Coordinate(1,1), null)));
     }
 
@@ -146,7 +147,7 @@ public class TetrisModelTest {
     void clockTickTest() {
         TetrisModel model = new TetrisModel(new PositionedPieceFactory(PositionedPieceFactoryTest.positionedPieces));
         for (int i = 0; i<15;i++) {
-            model.clockTick();
+            model.timerTick();
         }
 
         String modelString = TetrisBoard.charArray2dToString(Arrays.copyOfRange(model.addPieceToCharArray2d(), 13, 15));

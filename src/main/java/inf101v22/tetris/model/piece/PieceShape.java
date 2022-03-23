@@ -7,15 +7,15 @@ import inf101v22.tetris.model.Tile;
 
 /** 
  * This class represents a Tetris piece with a shape and a {@link Tile}-object. 
- * There are eight different Tetris pieces that each are represented with an induvidual shape 
+ * There are eight different Tetris pieces that has their own induvidual shape
  * and {@link Tile}-object
  * 
  * @author Espen Lilleengen
 */
 public class PieceShape {
 
-    private Tile tile;
-    private boolean[][] shape;
+    private final Tile tile;
+    private final boolean[][] shape;
 
     static final PieceShape T = new PieceShape(
         new Tile(Color.GREEN, 'T'), 
@@ -80,30 +80,30 @@ public class PieceShape {
     }
 
     /** @return the shape of the piece as a 2 dimentional array of boolean values*/
-    public boolean[][] getShape() {
+    boolean[][] getShape() {
         return shape;
     }
 
     /** @return the width of the piece*/
-    public int getWidth() {
+    int getWidth() {
         return shape[0].length;
     }
 
     /** @return the height of the piece*/
-    public int getHeight() {
+    int getHeight() {
         return shape.length;
     }
 
     /** @return the tile coresponding to a {@link PieceShape}-object*/
-    public Tile getTile() {
+    Tile getTile() {
         return tile;
     }
 
     /**
      * Roates the shape of the teris piece to the left
-     * @return a 2 dimentional boolean array of the rotatet shape
+     * @return a new {@link PieceShape}-object with the rotated shape
      */
-    public PieceShape rotateLeft() { 
+    PieceShape rotateLeft() { 
         boolean[][] rotatedShape = new boolean[getWidth()][getHeight()];
 
         for (int i = 0; i <getWidth(); i++) { 
@@ -116,9 +116,9 @@ public class PieceShape {
 
     /**
      * Roates the shape of the teris piece to the right
-     * @return a 2 dimentional boolean array of the rotatet shape
+     * @return a new {@link PieceShape}-object with the rotated shape
      */
-    public PieceShape rotateRight() {
+    PieceShape rotateRight() {
         boolean[][] rotatedShape = new boolean[getWidth()][getHeight()];
 
         for (int i = 0; i < getWidth(); i++) {
@@ -128,8 +128,6 @@ public class PieceShape {
         }
         return new PieceShape(getTile(), rotatedShape);
     }
-
-
 
     @Override
     public boolean equals(Object obj) {
@@ -158,7 +156,6 @@ public class PieceShape {
     public int hashCode() {
         return Objects.hash(tile, shape);
     }
-
 
     @Override
     public String toString() {

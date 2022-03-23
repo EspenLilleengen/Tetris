@@ -23,12 +23,12 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     private PositionedPiece heldPiece;
     private PositionedPiece ghostPiece;
     private PositionedPieceFactory positionedPieceFactory;
-    private boolean holdActionActive = true;
+    private boolean isHoldPossible = true;
 
     private GameScreen gameScreen;
-    private ScoreBoard scoreBoard;
+    private final ScoreBoard scoreBoard;
 
-    private final int initialDelay = 200000;
+    private final int initialDelay = 2000;
     private int numPieces = 0;
     private int scoreCount = 0;
 
@@ -88,7 +88,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
     /**
      * @return a 2 dimentional array of characters that repsent the given tetris board with pieces
      */
-    public char[][] addPieceToCharArray2d() {
+    char[][] addPieceToCharArray2d() {
         char[][] charArray2d = tetrisBoard.toCharArray2d();
         for (CoordinateItem<Tile> coordinateItem : activePiece) {
             charArray2d[coordinateItem.getRow()][coordinateItem.getCol()] = coordinateItem.item.character;
@@ -104,41 +104,42 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
 
     @Override
     public boolean moveFallingPiece(int deltaRow, int deltaCol) {
-        PositionedPiece candidate = activePiece.copyTo(deltaRow, deltaCol);
+        PositionedPiece candidate = activePiece.movedCopy(deltaRow, deltaCol);
         return assignCanddidate(candidate);     
     }
 
     @Override
-    public boolean rotateFallingPieceLeft() {
+    public void rotateFallingPieceLeft() {
         PositionedPiece candidate = activePiece.rotateLeft();
-        return doBounce(candidate);
+        bounceOfWallsIfNeeded(candidate);
     }
 
     @Override
-    public boolean rotateFallingPieceRight() {
+    public void rotateFallingPieceRight() {
         PositionedPiece candidate = activePiece.rotateRight();
-        return doBounce(candidate);
+        bounceOfWallsIfNeeded(candidate);
     }
 
-    private boolean doBounce(PositionedPiece candidate) {
+    private void bounceOfWallsIfNeeded(PositionedPiece candidate) {
         if (assignCanddidate(candidate)) {
-            return true;
+            return;
         }
        for (int i = 0; i>-2; i--) {
-           for (int j = 0; j<3; j++) {
-                PositionedPiece temp = candidate.copyTo(j, i);
-                if (checkPositionedPieceLegality(temp)) {
-                    return assignCanddidate(temp);
-                }
-           }
+            if (bounceOfRoofIfNeeded(i, candidate))
+                return;
         }
         for (int i = 0; i<3; i++) {
-            for (int j = 0; j<3; j++) {
-                PositionedPiece temp = candidate.copyTo(j, i);
-                if (checkPositionedPieceLegality(temp)) {
-                    return assignCanddidate(temp);
-                }
-           }
+            if (bounceOfRoofIfNeeded(i, candidate))
+                return;
+        }
+    }
+
+    private boolean bounceOfRoofIfNeeded(int i, PositionedPiece candidate) {
+        for (int j = 0; j<3; j++) {
+            PositionedPiece temp = candidate.movedCopy(j, i);
+            if (assignCanddidate(temp)) {
+                return true;
+            }
         }
         return false;
     }
@@ -204,11 +205,11 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
 
     @Override
     public int getDelay() {
-        return (int) (initialDelay* Math.pow(0.98, numPieces));
+        return (int) (initialDelay* Math.pow(0.985, numPieces));
     }
 
     @Override
-    public void clockTick() {
+    public void timerTick() {
         if (!moveFallingPiece(1, 0)) {
             landPiece();
         }
@@ -244,17 +245,17 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
 
     @Override
     public boolean getHoldAction() {
-        return holdActionActive;
+        return isHoldPossible;
     }
 
     @Override
     public void blockHoldAction() {
-        holdActionActive = false;
+        isHoldPossible = false;
     }
 
     @Override
     public void unblockHoldAction() {
-        holdActionActive = true;
+        isHoldPossible = true;
     }
 
     @Override
@@ -271,7 +272,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         activePiece = positionedPieceFactory.getNextPositionedPiece();
         originalActivePiece=activePiece;
         nextPiece = positionedPieceFactory.getNextPositionedPiece();
-        holdActionActive=true;
+        isHoldPossible=true;
         updateGhostPiece();
     }
 
@@ -284,12 +285,12 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
         PositionedPiece candidate = activePiece;
         ghostPiece = candidate;
         while(true) {
-        candidate = candidate.copyTo(1, 0);
-        if (checkPositionedPieceLegality(candidate)) {
-            ghostPiece = candidate;
-            continue;
-        }
-        break;
+            candidate = candidate.movedCopy(1, 0);
+            if (checkPositionedPieceLegality(candidate)) {
+                ghostPiece = candidate;
+                continue;
+            }
+            break;
         }
     }
 

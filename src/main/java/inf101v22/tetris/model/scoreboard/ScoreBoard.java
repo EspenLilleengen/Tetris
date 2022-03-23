@@ -31,7 +31,7 @@ public class ScoreBoard implements Iterable<Score> {
         try {
             FileInputStream fileStream = new FileInputStream(path);
             ObjectInputStream scoreIn = new ObjectInputStream(fileStream);
-            highScores = (List<Score>) scoreIn.readObject();   // TODO: check cast with instansof
+            highScores = (List<Score>) (scoreIn.readObject()); 
             scoreIn.close();
         }
         catch (Exception e) {
@@ -57,13 +57,5 @@ public class ScoreBoard implements Iterable<Score> {
     public Iterator<Score> iterator() {
         Collections.sort(highScores);
         return highScores.iterator();
-    }
-
-    public static void main(String[] args) {
-        ScoreBoard s = new ScoreBoard("/Users/lx/Desktop/INF101/Espen.Lilleengen_sem1-tetris/src/main/java/inf101v22/tetris/model/scoreboard/ScoreBoardData.txt");
-        
-        for (Score i : s) {
-            System.out.println(i.toString());
-        }
     }
 }

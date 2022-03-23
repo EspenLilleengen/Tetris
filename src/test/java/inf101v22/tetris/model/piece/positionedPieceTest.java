@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** 
- * Testing the class {@link positionedPiece}
+ * Testing the class {@link PositionedPiece}
 */
 public class positionedPieceTest {
 
@@ -48,9 +48,9 @@ public class positionedPieceTest {
     }
 
     @Test
-    void testCopyTo() {
+    void testMocedCopy() {
         PositionedPiece testPiece = new PositionedPiece(PieceShape.O, new Coordinate(0,0));
-        PositionedPiece copyPiece = testPiece.copyTo(1,1);
+        PositionedPiece copyPiece = testPiece.movedCopy(1,1);
 
         assertEquals(new PositionedPiece(PieceShape.O, new Coordinate(1,1)), copyPiece);
         assertFalse(testPiece.equals(copyPiece));
@@ -60,15 +60,19 @@ public class positionedPieceTest {
     void rotateTest() {
         PositionedPiece piece = new PositionedPiece(PieceShape.I, new Coordinate(2, 2));
 
-        PositionedPiece rotatedPiece = piece.rotateLeft();
+        PositionedPiece rotatedLeftPiece = piece.rotateLeft();
+        PositionedPiece rotatedRightPiece = piece.rotateRight();
 
         int oldCenterRow = piece.coordinate.row + piece.getHeight()/2;
         int oldCenterCol = piece.coordinate.col + piece.getWidth()/2;
-        int newCenterRow = rotatedPiece.coordinate.row + rotatedPiece.getHeight()/2;
-        int newCenterCol = rotatedPiece.coordinate.col + rotatedPiece.getWidth()/2;
+        int newLeftCenterRow = rotatedLeftPiece.coordinate.row + rotatedLeftPiece.getHeight()/2;
+        int newLeftCenterCol = rotatedLeftPiece.coordinate.col + rotatedLeftPiece.getWidth()/2;
+        int newRightCenterRow = rotatedRightPiece.coordinate.row + rotatedRightPiece.getHeight()/2;
+        int newRightCenterCol = rotatedRightPiece.coordinate.col + rotatedRightPiece.getWidth()/2;
 
-        assertEquals(oldCenterCol, newCenterCol);
-        assertEquals(oldCenterRow, newCenterRow);
+        assertEquals(oldCenterCol, newLeftCenterCol);
+        assertEquals(oldCenterRow, newLeftCenterRow);
+        assertEquals(oldCenterCol, newRightCenterCol);
+        assertEquals(oldCenterRow, newRightCenterRow);
     }
-    
 }

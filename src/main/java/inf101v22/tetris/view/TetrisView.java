@@ -12,8 +12,6 @@ import inf101v22.tetris.model.GameScreen;
 import inf101v22.tetris.model.Tile;
 import inf101v22.tetris.model.scoreboard.Score;
 
-//TODO: Make the text adapt to the window size
-
 /**
  * This class extends {@link JComponent} and can be used to 
  * paint a tetris board
@@ -26,7 +24,7 @@ public class TetrisView extends JComponent{
     private final TetrisViewable viewable;
 
     /**
-     * @param viewable - a {@link TetrisViewable}-object to get infomation about the tetrisboard from
+     * @param viewable - a {@link TetrisViewable}-object to get the necessary infomation to paint the game
      */
     public TetrisView( TetrisViewable viewable) {
         this.viewable = viewable;
@@ -44,8 +42,7 @@ public class TetrisView extends JComponent{
         int boardHeight = windowHeight;
 
         drawTetrisBoard(canvas, 4, 4, boardWidth-2*4, boardHeight-2*4, 2);
-        drawFallingPiece(canvas, 4, 4, boardWidth-2*4, boardHeight-2*4, 2, viewable.ghostPieceIterable(), true);
-        drawFallingPiece(canvas, 4, 4, boardWidth-2*4, boardHeight-2*4, 2, viewable.activePieceIterable(), false);
+        drawActiveAndGhostPiece(canvas, 4, 4, boardWidth-2*4, boardHeight-2*4, 2);
         drawScoreCount(canvas, boardWidth-3, 6, panelWidth, panelHeight/2);
         drawNextPiece(canvas, boardWidth -3, 8+panelHeight/2, panelWidth, panelHeight);
         drawHeldPiece(canvas, boardWidth -3, 10+panelHeight+panelHeight/2-panelHeight/10, panelWidth, panelHeight);
@@ -63,11 +60,17 @@ public class TetrisView extends JComponent{
     }
 
     private void drawTetrisBoard(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding) {
-        drawBoardWithRightBottomPadding(g, xBoard+2, yBoard+2, boardWidth, boardHeight, boardPadding);
+        drawBoardWithRightBottomPadding(g, xBoard+2, yBoard+2, boardWidth, boardHeight, boardPadding, viewable.boardIterable(), false);
+    }
+
+    private void drawActiveAndGhostPiece(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding) {
+        drawBoardWithRightBottomPadding(g, xBoard+2, yBoard+2, boardWidth, boardHeight,boardPadding, viewable.ghostPieceIterable(), true);
+        drawBoardWithRightBottomPadding(g, xBoard+2, yBoard+2, boardWidth, boardHeight,boardPadding, viewable.activePieceIterable(), false);
+
     }
 
     private void drawNextPiece(Graphics g, int x, int y, int panelWidth, int panelHeight) {
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(x, y, panelWidth, panelHeight - panelHeight/10);
         drawSidePanelString(g, "Next piece:", x, y,panelWidth, panelHeight, 15, true);
         drawSidePanelPiece(g, x, y, panelWidth, panelHeight, viewable.nextPieceIterable());
@@ -83,8 +86,17 @@ public class TetrisView extends JComponent{
 
     private void drawWelcomeScreen(Graphics canvas, int windowWidth, int windowHeight) {
         fillScreen(canvas, windowWidth, windowHeight, Color.BLUE);
-        drawWindowString(canvas, "Welcome", 0, 0, windowWidth, windowHeight, 35);
-        drawWindowString(canvas, "press enter to begin", 0, 50, windowWidth, windowHeight, 18);
+        drawWindowString(canvas, "Welcome!", 0, -100, windowWidth, windowHeight, 35);
+        drawWindowString(canvas, "press enter to begin", 0, -50, windowWidth, windowHeight, 18);
+        drawWindowString(canvas, "Controls:", 0, 10, windowWidth, windowHeight, 23);
+        drawWindowString(canvas, "Move piece = Arrow keys", 0, 40, windowWidth, windowHeight, 18);
+        drawWindowString(canvas, "Rotate right = Up key", 0, 60, windowWidth, windowHeight, 18);
+        drawWindowString(canvas, "Rotate left = Z", 0, 80, windowWidth, windowHeight, 18);
+        drawWindowString(canvas, "Drop piece = space", 0, 100, windowWidth, windowHeight, 18);
+        drawWindowString(canvas, "Hold piece = C", 0, 120, windowWidth, windowHeight, 18);
+        drawWindowString(canvas, "Pause = esc", 0, 140, windowWidth, windowHeight, 18);
+        drawWindowString(canvas, "Restart = R", 0, 160, windowWidth, windowHeight, 18);
+
     }
 
     private void drawPauseScreen(Graphics g, int windowWidth, int windowHeight) {
@@ -94,27 +106,27 @@ public class TetrisView extends JComponent{
     }
 
     private void drawScoreCount(Graphics g, int x, int y, int panelWidth, int panelHeight) {
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(x, y, panelWidth, panelHeight);
         drawSidePanelString(g, "Score: ", x, y,panelWidth, panelHeight, 15, true);
         drawSidePanelString(g,""+viewable.getScore(), x, y+15, panelWidth, panelHeight, 15, true);
     }
 
     private void drawHeldPiece(Graphics g, int x, int y, int panelWidth, int panelHeight) {
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(x, y, panelWidth, panelHeight);
         drawSidePanelString(g, "Held piece:", x, y, panelWidth, panelHeight, 15, true);
         drawSidePanelPiece(g, x, y, panelWidth, panelHeight, viewable.heldPieceIterable());
     }
 
     private void drawScoreBoard(Graphics g, int x, int y, int panelWidth, int panelHeight) {
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(x, y, panelWidth, panelHeight);
         drawSidePanelString(g, "Highscores: ", x, y, panelWidth, panelHeight, 15, true);
 
         int i = 1;
         for (Score s : viewable.scoreIterable()) {
-            drawSidePanelString(g, i + ": " + s.toString(), x, y+(18*i), panelWidth, panelHeight, 13, false);
+            drawSidePanelString(g, i + ": " + s.toString(), x+4, y+(18*i), panelWidth, panelHeight, 13, false);
             i++;
             if (i==6) {
                 break;
@@ -122,49 +134,25 @@ public class TetrisView extends JComponent{
         }
     }
 
-    private void drawFallingPiece(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding, 
-                                  Iterable<CoordinateItem<Tile>> iterable, boolean isGhostPiece) {
-        int rows = viewable.getRows();
-        int cols = viewable.getCols();
-        boardHeight-=boardPadding;
-        boardWidth-=boardPadding;
-        Color color;
-
-        for (CoordinateItem<Tile> cItem : iterable) {
-            int row = cItem.getRow();
-            int col = cItem.getCol();
-            if (isGhostPiece) {
-                color = new Color(204, 204, 204, 128);
-
-
-            } else {
-                color = cItem.item.color;
-            }
-
-            int tileX = xBoard + col * boardWidth/cols;
-            int tileY = yBoard + row * boardHeight/rows;
-            int nextX = xBoard + (col +1) * boardWidth/cols;
-            int nextY = yBoard + (row +1) * boardHeight/rows;
-            int tileWidth = nextX - tileX;
-            int tileHeight = nextY - tileY;
-            drawTileWithRightBottomPadding(g, tileX+2, tileY+2, tileWidth, tileHeight, 2, color);
-        }
-    }
-
-    private void drawBoardWithRightBottomPadding(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding) {
+    private void drawBoardWithRightBottomPadding(Graphics g, int xBoard, int yBoard, int boardWidth, int boardHeight, int boardPadding,
+    Iterable<CoordinateItem<Tile>> iterable, boolean isGhostPiece) {
         int rows = viewable.getRows();
         int collums = viewable.getCols();
         boardHeight-=boardPadding;
         boardWidth-=boardPadding;
 
-        for (CoordinateItem<Tile> cItem : viewable.boardIterable()) {
+        for (CoordinateItem<Tile> cItem : iterable) {
             int row = cItem.getRow();
             int col = cItem.getCol();
             Color color;
             
             if (cItem.item==null) {
                 color = Color.BLACK;
-            } else {
+            } else if (isGhostPiece) {
+                color = new Color(204, 204, 204, 128);
+            }
+            
+            else {
                 color = cItem.item.color;
             } 
 
@@ -178,7 +166,6 @@ public class TetrisView extends JComponent{
         }
     }
 
-
     private void drawTileWithRightBottomPadding(Graphics g, int x, int y, int tileWidth, int tileHeight, int tilePadding, Color color) {
         g.setColor(color);
         g.fillRect(x, y, tileWidth-tilePadding, tileHeight-tilePadding);
@@ -186,7 +173,7 @@ public class TetrisView extends JComponent{
 
 
     private void drawSidePanelString(Graphics g, String s, int x, int y, int panelWidth, int panelHeight, int fontSize, boolean centered) {
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         Font f = new Font("SansSerif", Font.BOLD,fontSize);
         g.setFont(f);
         int scoreX;
@@ -237,7 +224,7 @@ public class TetrisView extends JComponent{
 
     private void drawWindowString(Graphics g, String s, int x, int y, int windowWidth, int windowHeight, int fontSize) {
         g.setColor(Color.WHITE);
-        Font f = new Font("SansSerif", Font.BOLD, fontSize);
+        Font f = new Font("Monospaced", Font.BOLD, fontSize);
         g.setFont(f);
         GraphicHelperMethods.drawCenteredString(g, s, x, y, windowWidth, windowHeight);
     }
@@ -246,12 +233,11 @@ public class TetrisView extends JComponent{
     public Dimension getPreferredSize() {
         int columns = viewable.getCols();
         int rows = viewable.getRows();
-        int sWidth = 45;
-        int sHeight=35;
+        int sWidth = 50;
+        int sHeight=39;
 
         int preferredWidth = (sWidth + 2) * columns + 2 + 4;
         int preferredHeight = (sHeight + 2) * rows + 2 + 4;
-
 
         return new Dimension(preferredWidth, preferredHeight);
     }

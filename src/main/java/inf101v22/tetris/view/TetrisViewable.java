@@ -58,8 +58,8 @@ public interface TetrisViewable {
     /**
      * An iterable over the scores of the game
      * @return An iterable of scores  
-      */
-      Iterable<Score> scoreIterable();
+    */
+    Iterable<Score> scoreIterable();
 
 
 

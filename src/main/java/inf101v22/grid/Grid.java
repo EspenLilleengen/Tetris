@@ -5,45 +5,49 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A gird that holds a set of elements
+ * A 2 dimentional grid that holds a set of elements
  * 
  * @param <E> The type of elements to be held by the grid
  * 
  * @author Espen Lilleengen
  */
 public class Grid<E> implements IGrid<E>{
-    private List<E> coordinateItems;
+    private final List<E> items;
     private final int rows;
     private final int cols;
 
     /**
-     * Construct a grid with the given row and column dimensions, 
-     * which initially holds null
+     * Construct a grid with the given row and column dimensions,which initially holds null.
+     * A grid cannot have rows and collum dimentions smallen than 1,in which case the grid 
+     * would not have any dimentions.
      * 
      * @param rows
      * @param cols
+     * @throws IllegalArgumentException of the rows or collums values is smaller than 1
      */
     public Grid(int rows, int cols) {
         this(rows, cols, null);
     }
 
     /**
-     * Constructs a grid with the given dimensions
+     * Constructs a grid with the given dimensions. A grid cannot have rows and collum dimentions smallen than 1,
+     * in which case the grid would not have any dimentions.
      * 
      * @param rows
      * @param cols
      * @param initialValue What value the coordinates should initally hold
+     * @throws IllegalArgumentException of the rows or collums values is smaller than 1
      */
     public Grid(int rows, int cols, E initialValue) {
         if (rows <= 0 || cols <= 0) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Rows and collum values must be at least 1");
 		}
 
         this.rows = rows;
         this.cols = cols;
-        coordinateItems = new ArrayList<>(rows*cols);
+        items = new ArrayList<>(rows*cols);
         for (int i = 0; i < rows*cols; i++) {
-            coordinateItems.add(initialValue);
+            items.add(initialValue);
         }
     }
 
@@ -74,8 +78,7 @@ public class Grid<E> implements IGrid<E>{
     @Override
     public void set(Coordinate coordinate, E value) {
         checkCoordinate(coordinate);
-        
-        coordinateItems.set(coordinateToIndex(coordinate), value);
+        items.set(coordinateToIndex(coordinate), value);
     }
 
     /**
@@ -94,6 +97,7 @@ public class Grid<E> implements IGrid<E>{
 	 * If it is not, an IndexOutOfBoundsException is thrown.
 	 * 
 	 * @param coordinate the coordinate to check
+     * @throws IndexOutOfBoundsException if the coordinate is not within the bounds of the grid
 	 */
     private void checkCoordinate(Coordinate coordinate) {
         if(!coordinateIsOnGrid(coordinate)) {
@@ -104,7 +108,7 @@ public class Grid<E> implements IGrid<E>{
     @Override
     public E get(Coordinate coordinate) {
         checkCoordinate(coordinate);
-        return coordinateItems.get(coordinateToIndex(coordinate));
+        return items.get(coordinateToIndex(coordinate));
     }
 
     @Override

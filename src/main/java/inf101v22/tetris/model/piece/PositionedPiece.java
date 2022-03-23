@@ -47,10 +47,10 @@ public class PositionedPiece implements Iterable<CoordinateItem<Tile>>{
         List<CoordinateItem<Tile>> coordinateItemsIterable = new ArrayList<>();
         boolean[][] shape = pieceShape.getShape();
 
-        for (int row = coordinate.row; row < coordinate.row + getHeight(); row++) {
-            for (int col = coordinate.col; col < coordinate.col + getWidth(); col++) {
-                if (shape[row - coordinate.row][col - coordinate.col]) {
-                    Coordinate c = new Coordinate(row,col);
+        for (int row = 0; row < getHeight(); row++) {
+            for (int col = 0; col < getWidth(); col++) {
+                if (shape[row][col]) {
+                    Coordinate c = new Coordinate(coordinate.row + row, coordinate.col + col);
                     coordinateItemsIterable.add(new CoordinateItem<Tile>(c,pieceShape.getTile()));
                 }
             }
@@ -65,7 +65,7 @@ public class PositionedPiece implements Iterable<CoordinateItem<Tile>>{
      * @param deltaColumn where to move the new object along the column
      * @return The copy of the object, with new Coordinates
     */
-    public PositionedPiece copyTo(int deltaRow, int deltaColumn) {
+    public PositionedPiece movedCopy(int deltaRow, int deltaColumn) {
         return new PositionedPiece(pieceShape, new Coordinate(coordinate.row+deltaRow, coordinate.col+deltaColumn));
      }
 
@@ -100,7 +100,7 @@ public class PositionedPiece implements Iterable<CoordinateItem<Tile>>{
         int deltaRow = oldCenterRow-newCenterRow;
         int deltaCol = oldCenterCol-newCenterCol;
 
-        return rotatedPiece.copyTo(deltaRow,deltaCol);
+        return rotatedPiece.movedCopy(deltaRow,deltaCol);
     } 
 
     @Override

@@ -9,7 +9,9 @@ import java.util.Objects;
  */
 public class Coordinate {
 
+    /** The row index of the coordinate*/
     public final int row;
+    /** The column index of the coordinate*/
     public final int col;
 
     /**

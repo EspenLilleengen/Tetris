@@ -3,7 +3,8 @@ package inf101v22.grid;
 import java.util.Objects;
 
 /**
- * This class represents an object with that holds a {@link Coordinate}-object and an element 
+ * An object of this class repsesents an element on a grid. The elemnts position is determined by
+ * a {@link Coordinate}-object.
  * 
  * @param <E> The type of element to be held by the CoordinateItem
  * 
@@ -11,7 +12,9 @@ import java.util.Objects;
  */
 public class CoordinateItem <E> {
 
+    /** The corrdinate of the object*/
     public final Coordinate coordinate;
+    /** The item held by the object*/
     public final E item;
 
     /**
@@ -48,9 +51,9 @@ public class CoordinateItem <E> {
     public boolean equals(Object obj) {
         if (this == obj) 
             return true;
-        if (!(obj instanceof CoordinateItem)) 
+        if (!(obj instanceof CoordinateItem<?>)) 
             return false;
-        
+        @SuppressWarnings("unchecked")
         CoordinateItem<E> other = (CoordinateItem<E>) obj;
         if (other.item!=null) {
             return this.coordinate.equals(other.coordinate) && this.item.equals(other.item);

@@ -16,6 +16,7 @@ import java.awt.event.KeyListener;
 //Add throws/try/catch where relevant, indexoutofboundsexseption
 //Insert location where possible
 //remove boolean where void can be used
+//Press R to restart
 
 public class TetrisMain {
     public static final String WINDOW_TITLE = "INF101 Tetris";

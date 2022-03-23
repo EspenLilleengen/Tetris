@@ -42,6 +42,18 @@ public class GridTest {
     }
 
     @Test
+    void throwsExceptionWheenRowsOrColsAreSmallerThan1() {
+
+        try {
+            new Grid<>(1, 0);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // Test passed
+        }
+
+    }
+
+    @Test
     void gridCanHoldNull() {
         String defaultValue = "x";
         IGrid<String> grid = new Grid<>(3, 2, defaultValue);

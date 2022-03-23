@@ -17,15 +17,16 @@ import inf101v22.tetris.model.TetrisModel;
  */
 public class TetrisController implements java.awt.event.KeyListener, java.awt.event.ActionListener {
 
-    private TetrisControllable model;
-    private JComponent view;
-    private Timer timer;
-    private TetrisSong tetrisSong = new TetrisSong();
-    private ScoreNamer scoreNamer = new ScoreNamer(this);
+    private final TetrisControllable model;
+    private final JComponent view;
+    private final Timer timer;
+    private final TetrisSong tetrisSong = new TetrisSong();
+    private final ScoreNamer scoreNamer = new ScoreNamer(this);
 
 
     /**
      * Construct a new TetrisController with the the given arguments.
+     * 
      * @param model a {@link TetrisControllable}-object to be held by the object
      * @param view a {@link JComponent}-object to be held by the object
     */
@@ -47,8 +48,6 @@ public class TetrisController implements java.awt.event.KeyListener, java.awt.ev
                 model.setGameScreen(GameScreen.WELCOME);
                 model.resetBoard();
             }
-            view.repaint();
-            return;
         }
         else if (model.getGameScreen()==GameScreen.WELCOME) {
             if (e.getKeyCode()==KeyEvent.VK_ENTER) {
@@ -56,8 +55,6 @@ public class TetrisController implements java.awt.event.KeyListener, java.awt.ev
                 model.setGameScreen(GameScreen.ACTIVE_GAME);
                 timer.start();
             }
-            view.repaint();
-            return;
         }
         else if (model.getGameScreen() == GameScreen.PAUSE) {
             if (e.getKeyCode()==KeyEvent.VK_ENTER) {
@@ -93,6 +90,11 @@ public class TetrisController implements java.awt.event.KeyListener, java.awt.ev
         }
         else if (e.getKeyCode()==KeyEvent.VK_SPACE) {
            model.dropFallingPiece();
+           timer.restart();
+        }
+        if (e.getKeyCode()==KeyEvent.VK_R) {
+            model.setGameScreen(GameScreen.ACTIVE_GAME);
+            model.resetBoard();
         }
         view.repaint();
     }
@@ -107,9 +109,9 @@ public class TetrisController implements java.awt.event.KeyListener, java.awt.ev
     @Override
     public void actionPerformed(ActionEvent e) {
         if (model.getGameScreen()==GameScreen.ACTIVE_GAME) {
-            model.clockTick();
-            view.repaint();
+            model.timerTick();
             setTimerDelay();
+            view.repaint();
         }
         if (e.getSource() == scoreNamer.getOkButton()) {
             if (scoreNamer.getTextField().getText().length() == 0) {

@@ -18,7 +18,7 @@ public class TetrisBoard extends Grid<Tile>{
      * @param rows the number of rows of the board
      * @param cols the number of columns of the board
      */
-    public TetrisBoard(int rows, int cols) {
+    TetrisBoard(int rows, int cols) {
         super(rows, cols);
     }
 
@@ -29,14 +29,14 @@ public class TetrisBoard extends Grid<Tile>{
      * @param cols the number of columns of the board
      * @param initialValue the initial value of the tiles in the board
      */
-    public TetrisBoard(int rows, int cols, Tile initialValue) {
+    TetrisBoard(int rows, int cols, Tile initialValue) {
         super(rows, cols, initialValue);
     }
 
     /**
      * @return a 2 dimentional array of characters that repsent the given tetris board
      */
-    public char[][] toCharArray2d() {
+    char[][] toCharArray2d() {
         char[][] charArray2d = new char[getRows()][getCols()];
 
         for (CoordinateItem<Tile> coordinateItem : this) {
@@ -54,7 +54,7 @@ public class TetrisBoard extends Grid<Tile>{
      * @param charArray2d a 2 dimentional array of characters 
      * @return a string where every row in the 2 dimentional array of characters is merged
      */
-    public static String charArray2dToString(char[][] charArray2d) {
+    static String charArray2dToString(char[][] charArray2d) {
         String charArrayAsString = "";
 
         for (int row = 0; row < charArray2d.length; row++) {
@@ -72,7 +72,7 @@ public class TetrisBoard extends Grid<Tile>{
      * 
      * @return the number of rows removed from the board
      */
-    public int removeFullRows() {
+    int removeFullRows() {
         int rowsRemoved = 0;
 
         int a = getRows() -1;

@@ -8,7 +8,7 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 
 /** 
- * Displayes a box which allows users to type in their name. 
+ * Displayes a box which allows users to type in their initials. 
  * 
  * @author Espen Lilleengen
 */
@@ -17,35 +17,36 @@ public class ScoreNamer extends JFrame{
     private final JButton okButton;
     private final JTextField textField;
 
-    /**Constructs and displays a new ScoreNamer frame. 
+    /**
+     * Constructs and displays a new ScoreNamer frame. 
      * @param e the object that prosses the actions 
     */
-    public ScoreNamer(ActionListener e) {
+    ScoreNamer(ActionListener e) {
         JPanel userInterface = new JPanel();
         textField = new JTextField(15); 
         okButton = new JButton("OK");
-        userInterface.add(new JLabel("Enter your name: ")); 
+        userInterface.add(new JLabel("Enter your initials: ")); 
         userInterface.add(textField);
         okButton.addActionListener(e);
         userInterface.add(okButton);
         this.add(userInterface);
     }
 
-    /**Displays a panel that alows the user to enter their name*/
-    public void run() {
+    /**Displays the panel that alows the user to enter their name*/
+    void run() {
         this.setSize(325,100);
-        this.setTitle("Enter your name to submit your score");
+        this.setTitle("Enter your initials to submit your score");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 
     /**@return the OK button to be listened for*/
-    public JButton getOkButton() {
+    JButton getOkButton() {
         return okButton;
     }
 
     /**@return the textfield the user types in */
-    public JTextField getTextField() {
+    JTextField getTextField() {
         return textField;
     }
     
