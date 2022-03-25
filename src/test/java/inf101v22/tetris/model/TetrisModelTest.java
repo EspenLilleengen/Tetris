@@ -138,7 +138,7 @@ public class TetrisModelTest {
         model.dropFallingPiece();
         model.dropFallingPiece();
 
-        int delay =  (int) (2000 * Math.pow(0.98,2));
+        int delay =  (int) (2000 * Math.pow(0.985,2));
 
         assertEquals(delay, model.getDelay());
     }

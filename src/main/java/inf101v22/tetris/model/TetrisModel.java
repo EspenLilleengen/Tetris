@@ -9,7 +9,8 @@ import inf101v22.tetris.model.scoreboard.ScoreBoard;
 import inf101v22.tetris.view.TetrisViewable;
 
 /**
- * A class that implements {@link TetrisViewable} and {@link TetrisControllable}. Holds a {@link TetrisBoard}-object 
+ * A model for a game of Teris. Implements {@link TetrisViewable} and {@link TetrisControllable}.
+ * 
  * 
  * @author Espen Lilleengen
  */
