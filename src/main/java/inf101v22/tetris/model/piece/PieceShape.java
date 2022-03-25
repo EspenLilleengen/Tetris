@@ -137,18 +137,18 @@ public class PieceShape {
             return false;
         }
         PieceShape other = (PieceShape) obj;
-        if (!(this.getHeight() == other.getHeight()))
+        if (!(getHeight() == other.getHeight()))
             return false;
-        if (!(this.getWidth() == other.getWidth()))
+        if (!(getWidth() == other.getWidth()))
             return false;
         for (int i = 0; i <getHeight(); i++) {
             for (int j = 0; j < getWidth(); j++) {
-                if (this.shape[i][j] != other.shape[i][j]) { 
+                if (shape[i][j] != other.shape[i][j]) { 
                     return false;
                 }
             }
         }
-        return this.tile.equals(other.tile);
+        return tile.equals(other.tile);
     }
 
 

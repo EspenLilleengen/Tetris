@@ -58,7 +58,7 @@ public class Grid<E> implements IGrid<E>{
         for (int i = 0; i<rows; i++) {
             for (int j = 0; j<cols; j++) {
                 Coordinate coordinate = new Coordinate(i,j);
-                CoordinateItem<E> coordinateItem = new CoordinateItem<E>(coordinate, this.get(coordinate));
+                CoordinateItem<E> coordinateItem = new CoordinateItem<E>(coordinate, get(coordinate));
                 coordinateItemsIterable.add(coordinateItem);
             }
         }

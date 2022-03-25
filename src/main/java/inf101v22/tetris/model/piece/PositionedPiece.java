@@ -111,7 +111,7 @@ public class PositionedPiece implements Iterable<CoordinateItem<Tile>>{
             return false;
         }
         PositionedPiece other = (PositionedPiece) obj;
-        return this.coordinate.equals(other.coordinate) && this.pieceShape.equals(other.pieceShape);
+        return coordinate.equals(other.coordinate) && pieceShape.equals(other.pieceShape);
     }
 
     @Override

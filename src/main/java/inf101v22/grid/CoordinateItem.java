@@ -56,15 +56,15 @@ public class CoordinateItem <E> {
         @SuppressWarnings("unchecked")
         CoordinateItem<E> other = (CoordinateItem<E>) obj;
         if (other.item!=null) {
-            return this.coordinate.equals(other.coordinate) && this.item.equals(other.item);
+            return coordinate.equals(other.coordinate) && item.equals(other.item);
         } else {
-            return this.coordinate.equals(other.coordinate) && this.item==null;
+            return coordinate.equals(other.coordinate) && item==null;
         }
     }
 
     @Override
     public String toString() {
         return "{ coordinate='" + coordinate.toString() + 
-        "', item='" + this.item + "' }";
+        "', item='" + item + "' }";
     }
 }

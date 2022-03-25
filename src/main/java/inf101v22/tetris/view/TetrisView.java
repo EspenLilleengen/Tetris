@@ -19,7 +19,7 @@ import inf101v22.tetris.model.scoreboard.Score;
  * @author Espen Lilleengen
  */
 public class TetrisView extends JComponent{
-    { this.setFocusable(true); }
+    { setFocusable(true); }
 
     private final TetrisViewable viewable;
 
@@ -34,8 +34,8 @@ public class TetrisView extends JComponent{
     public void paint(Graphics canvas) {
         super.paint(canvas);
 
-        int windowWidth = this.getWidth();
-        int windowHeight = this.getHeight();
+        int windowWidth = getWidth();
+        int windowHeight = getHeight();
         int panelWidth = (int) (windowWidth*0.2);
         int panelHeight = (int) (windowHeight*0.18);
         int boardWidth =  windowWidth - (panelWidth);

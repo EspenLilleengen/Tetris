@@ -30,7 +30,7 @@ public class Tile {
         if (!(obj instanceof Tile)) 
             return false;
         Tile other = (Tile) obj;
-        return this.color.equals(other.color) && this.character==other.character;
+        return color.equals(other.color) && character==other.character;
     }
 
     @Override

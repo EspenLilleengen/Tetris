@@ -33,7 +33,7 @@ public class Coordinate {
             return false;
         }
         Coordinate other = (Coordinate) o;
-        return this.row == other.row && this.col == other.col;
+        return row == other.row && col == other.col;
     }
 
     @Override
@@ -44,8 +44,8 @@ public class Coordinate {
     @Override
     public String toString() {
         return "{" +
-            " row='" + this.row + "'" +
-            ", col='" + this.col + "'" +
+            " row='" + row + "'" +
+            ", col='" + col + "'" +
             " }";
     }
 }

@@ -26,14 +26,14 @@ public class Score implements Comparable<Score>, Serializable{
 
     @Override
     public int compareTo(Score that) {
-        if (this.score>that.score) {
+        if (score>that.score) {
             return -1;
         }
-        else if (this.score<that.score) {
+        else if (score<that.score) {
             return 1;
         }
         else {
-            return this.name.compareTo(that.name);
+            return name.compareTo(that.name);
         }
     }
 

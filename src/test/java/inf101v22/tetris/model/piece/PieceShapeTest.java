@@ -146,8 +146,4 @@ public class PieceShapeTest {
         }
         assertEquals(PieceShape.L, rotated4);
     }
-
-    
-
-
 }

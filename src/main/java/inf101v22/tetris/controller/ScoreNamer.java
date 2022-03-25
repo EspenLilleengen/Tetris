@@ -29,15 +29,15 @@ public class ScoreNamer extends JFrame{
         userInterface.add(textField);
         okButton.addActionListener(e);
         userInterface.add(okButton);
-        this.add(userInterface);
+        add(userInterface);
     }
 
     /**Displays the panel that alows the user to enter their name*/
     void run() {
-        this.setSize(325,100);
-        this.setTitle("Enter your initials to submit your score");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setVisible(true);
+        setSize(325,100);
+        setTitle("Enter your initials to submit your score");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setVisible(true);
     }
 
     /**@return the OK button to be listened for*/

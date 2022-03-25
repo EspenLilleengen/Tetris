@@ -59,7 +59,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
      * @param cols the number of columns of the tetris board
      */
     public TetrisModel(int rows, int cols) {
-        this.tetrisBoard = new TetrisBoard(rows,cols);
+        tetrisBoard = new TetrisBoard(rows,cols);
         positionedPieceFactory = new PositionedPieceFactory();
         positionedPieceFactory.setCenterColumn(getCols()/2);
         activePiece = positionedPieceFactory.getNextPositionedPiece();
@@ -146,7 +146,7 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
 
     private boolean assignCanddidate(PositionedPiece candidate) {
         if (checkPositionedPieceLegality(candidate)) {
-            this.activePiece = candidate;
+            activePiece = candidate;
             updateGhostPiece();
             return true;
         }
@@ -177,8 +177,8 @@ public class TetrisModel implements TetrisViewable, TetrisControllable{
             gameScreen = GameScreen.GAME_OVER;
             return;
         }
-        this.activePiece = nextPiece;
-        this.nextPiece = newPiece;
+        activePiece = nextPiece;
+        nextPiece = newPiece;
         originalActivePiece = activePiece;
         numPieces++;
         unblockHoldAction();
