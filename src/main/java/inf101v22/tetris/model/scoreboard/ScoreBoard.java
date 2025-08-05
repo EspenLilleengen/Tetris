@@ -31,7 +31,18 @@ public class ScoreBoard implements Iterable<Score> {
         try {
             FileInputStream fileStream = new FileInputStream(path);
             ObjectInputStream scoreIn = new ObjectInputStream(fileStream);
-            highScores = (List<Score>) (scoreIn.readObject()); 
+            Object obj = scoreIn.readObject();
+            if (obj instanceof List<?>) {
+                List<?> tempList = (List<?>) obj;
+                highScores = new ArrayList<>();
+                for (Object o : tempList) {
+                    if (o instanceof Score) {
+                        highScores.add((Score) o);
+                    }
+                }
+            } else {
+                highScores = new ArrayList<>();
+            }
             scoreIn.close();
         }
         catch (Exception e) {

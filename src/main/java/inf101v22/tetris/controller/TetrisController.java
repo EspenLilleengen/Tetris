@@ -85,7 +85,7 @@ public class TetrisController implements java.awt.event.KeyListener, java.awt.ev
         else if (e.getKeyCode()==KeyEvent.VK_Z) {
             model.rotateFallingPieceLeft(); 
         }
-        else if (e.getKeyCode()==KeyEvent.VK_SHIFT) { //my up-key is broken;( //TODO: change keys
+        else if (e.getKeyCode()==KeyEvent.VK_UP) { 
             model.rotateFallingPieceRight();
         }
         else if (e.getKeyCode()==KeyEvent.VK_SPACE) {

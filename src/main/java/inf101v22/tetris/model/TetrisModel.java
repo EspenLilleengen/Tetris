@@ -10,7 +10,7 @@ import inf101v22.tetris.view.TetrisViewable;
 
 /**
  * A model for a game of Teris. Implements {@link TetrisViewable} and {@link TetrisControllable}.
- * 
+ * q
  * 
  * @author Espen Lilleengen
  */
