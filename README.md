@@ -2,6 +2,9 @@
 
 Prosjekt fra faget INF101 - Objektorientert programering ved universitetet i Bergen. Hensikten med prosjektet var å lage Tetris fra bunn på en måte som overholder prinsippene fra objekt orientert programering.  
 
+Oppgaven er laget av Informatikk-fakultetet ved UIB og implementasjonen av oppgaven er kodet av Espen Lilleengen.
+
+
 ## Oversikt over arkitektur
 
 Vi baserer modellen vår på design -prinsippet om [model-view-controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller), hvor vi i størst mulig grad ønsker å skille fra hverandre
