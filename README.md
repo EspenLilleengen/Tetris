@@ -1,5 +1,3 @@
-<img align="right" width=200 src="./guide/pics/tetris-inaction.png">
-
 # Tetris
 
 Prosjekt fra faget INF101 - Objektorientert programering ved universitetet i Bergen. Hensikten med prosjektet var å lage Tetris fra bunn på en måte som overholder prinsippene fra objekt orientert programering.  
